@@ -31,8 +31,12 @@ public abstract class Monster {
   public void setDefensPower(int defense_power) {
     this.defense_power = defense_power;
   }
-  public void setBattle(boolean battle){
-    this.battle = battle ? false : true;
+  public void setBattle(){
+    if (this.hp <= 0){
+      battle = false;
+    } else {
+      battle = true;
+    }
   }
 
   public String getName(){
@@ -49,6 +53,9 @@ public abstract class Monster {
   }
   public int getDefensePower(){
     return this.defense_power;
+  }
+  public boolean getBattle(){
+    return this.battle;
   }
 
   public abstract void Attack();
