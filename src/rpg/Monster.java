@@ -7,7 +7,7 @@ public abstract class Monster {
   protected int attack_power;
   protected int defense_power;
   protected int agility;
-  protected boolean battle = false;
+  protected boolean battle = true;
 
   public Monster(String name, int hp, int max_hp, int attack_power, int defense_power, int agility){
     this.name = name;
@@ -37,11 +37,7 @@ public abstract class Monster {
     this.agility = agility;
   }
   public void setBattle(){
-    if (this.hp <= 0){
-      battle = false;
-    } else {
-      battle = true;
-    }
+    this.battle = this.hp > 0;
   }
 
   public String getName(){

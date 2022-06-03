@@ -10,7 +10,7 @@ public class EnemyMonster extends Monster{
     if (myHp < 0 ){
       myHp = 0;
     }
-    System.out.println(myMonster.name + "へ" + attack_power + "のダメージ。残り体力は" + myHp);
+    System.out.println(myMonster.name + "へ" + damage + "のダメージ。残り体力は" + myHp);
   }
 
   public EnemyMonster(String name, int hp, int max_hp, int attack_power, int defense_power, int agility){
