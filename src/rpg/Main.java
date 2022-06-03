@@ -5,6 +5,14 @@ import java.util.Scanner;
 public class Main {
   public static void main(String[] args) {
     MyMonster myMonster = new MyMonster("my1", 1200, 1200, 80, 20, 32);
+    EnemyMonster[] enemyMonsters = {
+      new EnemyMonster("ene1", 100, 100, 70, 10, 3),
+      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
+      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
+      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
+      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
+      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
+    };
     EnemyMonster enemyMonster = new EnemyMonster("ene1", 100, 100, 70, 10, 35);
 
     letsBattle(myMonster, enemyMonster);
