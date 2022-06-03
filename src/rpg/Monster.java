@@ -56,7 +56,7 @@ public abstract class Monster {
 	public void setAttackPower(int newAttackPower) {
 		this.attackPower = newAttackPower;
 	}
-	public void setDecfensePower(int newDefensePower) {
+	public void setDefensePower(int newDefensePower) {
 		this.defensePower = newDefensePower;
 	}
 	private void setBattle() {
