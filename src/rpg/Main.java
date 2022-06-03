@@ -6,8 +6,8 @@ public class Main {
 		System.out.println("==========冒険スタート！==========");
 
 		// 味方と敵のモンスターオブジェクトを生成
-		MyMonster myMonster = new MyMonster("勇者", 100, 100, 30, 25);
-		EnemyMonster enemyMonster = new EnemyMonster("スライム", 70, 70, 5, 80);
+		MyMonster myMonster = new MyMonster("勇者", 183, 183, 182, 115);
+		EnemyMonster enemyMonster = new EnemyMonster("スライム", 155, 155, 152, 100);
 
 		// 味方のステータスを表示
 		System.out.println(myMonster);
