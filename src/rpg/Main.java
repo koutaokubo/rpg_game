@@ -25,7 +25,7 @@ public class Main {
 			System.out.println("残りHP： " + enemyMonster.getHp());
 
 			// 戦闘終了（味方の勝利）
-			if(!myMonster.getBattle()  || !enemyMonster.getBattle()) {
+			if(!enemyMonster.getBattle()) {
 				System.out.println(enemyMonster.getName() + " を倒した！");
 				break;
 			}
@@ -37,7 +37,7 @@ public class Main {
 			System.out.println("残りHP： " + myMonster.getHp());
 
 			// 戦闘終了（敵の勝利）
-			if(!myMonster.getBattle()  || !enemyMonster.getBattle()) {
+			if(!myMonster.getBattle()) {
 				System.out.println(myMonster.getName() + " は倒されてしまった・・・");
 				break;
 			}
