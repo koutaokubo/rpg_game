@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Main {
   public static void main(String[] args) {
     MyMonster myMonster = new MyMonster("my1", 1200, 1200, 80, 20, 32);
-    EnemyMonster enemyMonster = new EnemyMonster("ene1", 100, 100, 570, 10, 35);
+    EnemyMonster enemyMonster = new EnemyMonster("ene1", 100, 100, 70, 10, 35);
 
     letsBattle(myMonster, enemyMonster);
   }
@@ -21,7 +21,7 @@ public class Main {
         enemyMonster.attack(myMonster, enemyMonster);
         if(myMonster.getBattle()) {
           myMonster.attack(enemyMonster, myMonster);
-        }
+        }//todo
       }
     }
     isWin(myMonster, enemyMonster);
@@ -39,7 +39,6 @@ public class Main {
         isContinue(myMonster);
       }else if(selectCommand == 2){
         recovery(myMonster, enemyMonster);
-        letsBattle(myMonster, enemyMonster);
       }else if(selectCommand == 3){
         return;
       }
