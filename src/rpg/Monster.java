@@ -6,13 +6,15 @@ public abstract class Monster {
   protected int max_hp;
   protected int attack_power;
   protected int defense_power;
+  protected int agility;
   protected boolean battle = false;
 
-  public Monster(String name, int hp, int max_hp, int attack_power, int defense_power){
+  public Monster(String name, int hp, int max_hp, int attack_power, int defense_power, int agility){
     this.name = name;
     this.hp = hp;
     this.max_hp = max_hp;
     this.attack_power = attack_power;
+    this.agility = agility;
     this.defense_power = defense_power;
   }
 
@@ -30,6 +32,9 @@ public abstract class Monster {
   }
   public void setDefensPower(int defense_power) {
     this.defense_power = defense_power;
+  }
+  public void setAgility(int agility) {
+    this.agility = agility;
   }
   public void setBattle(){
     if (this.hp <= 0){
@@ -54,11 +59,14 @@ public abstract class Monster {
   public int getDefensePower(){
     return this.defense_power;
   }
+  public int getAgility() {
+    return this.agility;
+  }
   public boolean getBattle(){
     return this.battle;
   }
 
-  public abstract void Attack();
+  public abstract void attack(Monster myMonster, Monster enemyMonster);
 
   public String toString() {
     return ("名前" + name + "残りHP" + hp);
