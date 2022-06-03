@@ -23,6 +23,7 @@ public abstract class Monster {
   }
   public void setHp(int hp) {
     this.hp = hp;
+    this.setBattle();
   }
   public void setMaxHp(int max_hp) {
     this.max_hp = max_hp;

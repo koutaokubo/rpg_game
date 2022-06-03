@@ -14,17 +14,13 @@ public class Main {
     while(myMonster.getBattle() && enemyMonster.getBattle()){
       if(myMonster.agility > enemyMonster.agility){
         myMonster.attack(enemyMonster, myMonster);
-        enemyMonster.setBattle();
         if(enemyMonster.getBattle()){
           enemyMonster.attack(myMonster, enemyMonster);
-          myMonster.setBattle();
         }
       } else if(myMonster.agility < enemyMonster.agility) {
         enemyMonster.attack(myMonster, enemyMonster);
-        myMonster.setBattle();
         if(myMonster.getBattle()) {
           myMonster.attack(enemyMonster, myMonster);
-          enemyMonster.setBattle();
         }
       }
     }
