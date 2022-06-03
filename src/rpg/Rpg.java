@@ -1,6 +1,6 @@
 package rpg;
 
 public class Rpg {
-//   わーい
+//   わーい 、わいわーい
 	
 }
