@@ -63,5 +63,4 @@ public abstract class Monster {
 	}
 
 	public abstract void attack(Monster m);
->>>>>>> origin/working/maeda
 }
