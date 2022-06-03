@@ -2,5 +2,5 @@ package rpg;
 
 public class Rpg {
 //   わーい
-    わいわーい
+    ////////fasgshfajjjklf;g.d
 }
