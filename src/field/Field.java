@@ -25,6 +25,6 @@ public class Field {
     for (int i =0; i < number; i++){
        enemyMonsters.add(monsters.get(i));
     }
-    return monsters;
+    return enemyMonsters;
   }
 }
