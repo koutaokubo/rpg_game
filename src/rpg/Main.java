@@ -1,47 +1,87 @@
 package rpg;
 
+import java.util.Scanner;
+
 public class Main {
+  public static void main(String[] args) {
+    MyMonster myMonster = new MyMonster("my1", 1200, 1200, 80, 20, 32);
+    EnemyMonster[] enemyMonsters = {
+      new EnemyMonster("ene1", 100, 100, 70, 10, 3),
+      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
+      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
+      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
+      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
+      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
+    };
+    EnemyMonster enemyMonster = new EnemyMonster("ene1", 100, 100, 70, 10, 35);
 
-	public static void main(String[] args) {
-		System.out.println("==========冒険スタート！==========");
+    letsBattle(myMonster, enemyMonster);
+  }
 
-		// 味方と敵のモンスターオブジェクトを生成
-		MyMonster myMonster = new MyMonster("勇者", 183, 183, 182, 115);
-		EnemyMonster enemyMonster = new EnemyMonster("スライム", 155, 155, 152, 100);
+  public static void letsBattle(MyMonster myMonster, EnemyMonster enemyMonster){
+    while(myMonster.getBattle() && enemyMonster.getBattle()){
+      if(myMonster.agility > enemyMonster.agility){
+        myMonster.attack(enemyMonster, myMonster);
+        if(enemyMonster.getBattle()){
+          enemyMonster.attack(myMonster, enemyMonster);
+        }
+      } else if(myMonster.agility < enemyMonster.agility) {
+        enemyMonster.attack(myMonster, enemyMonster);
+        if(myMonster.getBattle()) {
+          myMonster.attack(enemyMonster, myMonster);
+        }//todo
+      }
+    }
+    isWin(myMonster, enemyMonster);
+  }
 
-		// 味方のステータスを表示
-		System.out.println(myMonster);
+  public static void isWin(MyMonster myMonster, EnemyMonster enemyMonster){
+    if(!myMonster.getBattle() && enemyMonster.getBattle()){
+      System.out.println("敗北しました");
+      return;
+    }
 
-		// 戦闘開始
-		System.out.print(enemyMonster.getName() + " があらわれた！");
-		System.out.println("HP: " + enemyMonster.getHp());
+    if(!enemyMonster.getBattle() && myMonster.getBattle()){
+      int selectCommand = inputCommand();
+      if(selectCommand == 1){
+        isContinue(myMonster);
+      }else if(selectCommand == 2){
+        recovery(myMonster, enemyMonster);
+      }else if(selectCommand == 3){
+        return;
+      }
+    }
+  }
 
-		// 戦闘処理
-		// どちらかが戦闘不能になったらループを抜ける
-		while(true) {
-			// 味方の攻撃
-			System.out.println("===" + myMonster.getName() + " の攻撃！===");
-			myMonster.attack(enemyMonster);
-			System.out.println("残りHP： " + enemyMonster.getHp());
+  public static int inputCommand(){
+    System.out.println("勝利しました");
+    Scanner scanner = new Scanner(System.in);
+    while(true) {
+      System.out.println("戦闘を続けますか？　続ける：１　回復して続ける：２　終了する：３");
+      if(scanner.hasNextInt()){
+        int selectCommand = scanner.nextInt();
+        if(selectCommand < 1 || selectCommand > 3){
+          System.out.println("数値は1,2,3のどれかを入力してください");
+          continue;
+        } else {
+          return selectCommand;
+        }
+      } else {
+        System.out.println("数値を入力してください");
+        scanner.next();
+      }
+      scanner.close();
+    }
+  }
 
-			// 戦闘終了（味方の勝利）
-			if(!enemyMonster.getBattle()) {
-				System.out.println(enemyMonster.getName() + " を倒した！");
-				break;
-			}
+  public static void recovery(MyMonster myMonster, EnemyMonster enemyMonster) {
+    // enemyMonster.hp = enemyMonster.max_hp;
+    myMonster.hp = myMonster.max_hp;
+    isContinue(myMonster);
+  }
 
-
-			// 敵の攻撃
-			System.out.println("===" + enemyMonster.getName() + " の攻撃！===");
-			enemyMonster.attack(myMonster);
-			System.out.println("残りHP： " + myMonster.getHp());
-
-			// 戦闘終了（敵の勝利）
-			if(!myMonster.getBattle()) {
-				System.out.println(myMonster.getName() + " は倒されてしまった・・・");
-				break;
-			}
-		}
-	}
-
+  public static void isContinue(MyMonster myMonster){
+    EnemyMonster nextEnemyMonster = new EnemyMonster("ene2", 300, 300, 130, 30, 5);
+    letsBattle(myMonster, nextEnemyMonster);
+  }
 }
