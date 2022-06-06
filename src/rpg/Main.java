@@ -1,52 +1,74 @@
 package rpg;
 
+import java.util.ArrayList;
 import java.util.Scanner;
+import field.Field;
 
 public class Main {
   public static void main(String[] args) {
-    MyMonster myMonster = new MyMonster("my1", 1200, 1200, 80, 20, 32);
-    EnemyMonster[] enemyMonsters = {
-      new EnemyMonster("ene1", 100, 100, 70, 10, 3),
-      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
-      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
-      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
-      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
-      new EnemyMonster("ene1", 100, 100, 70, 10, 35),
+    Field field = new Field(4);
+    // MyMonster myMonster = new MyMonster("my1", 1200, 1200, 80, 20, 32);
+    ArrayList<MyMonster> myMonsters = new ArrayList<>(){
+      {
+        add(new MyMonster("my1", 100, 100,30, 30, 15));
+        add(new MyMonster("my2", 100, 100,30, 30, 15));
+        add(new MyMonster("my3", 100, 100,30, 30, 15));
+        add(new MyMonster("my4", 100, 100,30, 30, 15));
+        add(new MyMonster("my5", 100, 100,30, 30, 15));
+        add(new MyMonster("my6", 100, 100,30, 30, 15));
+      }
     };
-    EnemyMonster enemyMonster = new EnemyMonster("ene1", 100, 100, 70, 10, 35);
+    // EnemyMonster enemyMonster = new EnemyMonster("ene1", 100, 100, 70, 10, 35);
 
-    letsBattle(myMonster, enemyMonster);
+    letsBattle(myMonsters, field.enemyMonsters);
   }
 
-  public static void letsBattle(MyMonster myMonster, EnemyMonster enemyMonster){
-    while(myMonster.getBattle() && enemyMonster.getBattle()){
+  public static void letsBattle(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters){
+    int i = 0;
+    int j = 0;
+    while(myMonsters.get(myMonsters.size() -1).getBattle() && enemyMonsters.get(enemyMonsters.size() -1).getBattle()){
+      MyMonster myMonster = myMonsters.get(i);
+      EnemyMonster enemyMonster = enemyMonsters.get(j);
       if(myMonster.agility > enemyMonster.agility){
         myMonster.attack(enemyMonster, myMonster);
         if(enemyMonster.getBattle()){
           enemyMonster.attack(myMonster, enemyMonster);
+          if(!myMonster.getBattle()){
+            i++;
+          }
+        }else{
+          j++;
         }
-      } else if(myMonster.agility < enemyMonster.agility) {
+      }
+      
+      if(myMonster.agility < enemyMonster.agility) {
         enemyMonster.attack(myMonster, enemyMonster);
         if(myMonster.getBattle()) {
           myMonster.attack(enemyMonster, myMonster);
-        }//todo
+          if(!enemyMonster.getBattle()){
+            j++;
+          }
+        }
+        else{
+          i++;
+        }
       }
+    isWin(myMonsters, enemyMonsters);
     }
-    isWin(myMonster, enemyMonster);
   }
 
-  public static void isWin(MyMonster myMonster, EnemyMonster enemyMonster){
-    if(!myMonster.getBattle() && enemyMonster.getBattle()){
+  public static void isWin(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters){
+    if(!myMonsters.get(myMonsters.size() -1).getBattle() && enemyMonsters.get(enemyMonsters.size() - 1).getBattle()){
       System.out.println("敗北しました");
       return;
     }
 
-    if(!enemyMonster.getBattle() && myMonster.getBattle()){
+    if(!enemyMonsters.get(enemyMonsters.size() - 1).getBattle() && myMonsters.get(myMonsters.size() - 1).getBattle()){
       int selectCommand = inputCommand();
       if(selectCommand == 1){
-        isContinue(myMonster);
+        isContinue(myMonsters);
       }else if(selectCommand == 2){
-        recovery(myMonster, enemyMonster);
+        recovery(myMonsters, enemyMonsters);
       }else if(selectCommand == 3){
         return;
       }
@@ -74,14 +96,14 @@ public class Main {
     }
   }
 
-  public static void recovery(MyMonster myMonster, EnemyMonster enemyMonster) {
+  public static void recovery(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters) {
     // enemyMonster.hp = enemyMonster.max_hp;
-    myMonster.hp = myMonster.max_hp;
-    isContinue(myMonster);
+    myMonsters.forEach(myMonster -> myMonster.hp = myMonster.max_hp);
+    isContinue(myMonsters);
   }
 
-  public static void isContinue(MyMonster myMonster){
-    EnemyMonster nextEnemyMonster = new EnemyMonster("ene2", 300, 300, 130, 30, 5);
-    letsBattle(myMonster, nextEnemyMonster);
+  public static void isContinue(ArrayList<MyMonster> myMonsters){
+    ArrayList<EnemyMonster> nextEnemyMonsters = new Field(3).enemyMonsters;
+    letsBattle(myMonsters, nextEnemyMonsters);
   }
 }
