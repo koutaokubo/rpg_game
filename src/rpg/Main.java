@@ -2,6 +2,7 @@ package rpg;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
 import field.Field;
 
 public class Main {
@@ -26,35 +27,70 @@ public class Main {
   public static void letsBattle(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters){
     int i = 0;
     int j = 0;
-    while(myMonsters.get(myMonsters.size() -1).getBattle() && enemyMonsters.get(enemyMonsters.size() -1).getBattle()){
-      MyMonster myMonster = myMonsters.get(i);
-      EnemyMonster enemyMonster = enemyMonsters.get(j);
-      if(myMonster.agility > enemyMonster.agility){
-        myMonster.attack(enemyMonster, myMonster);
-        if(enemyMonster.getBattle()){
-          enemyMonster.attack(myMonster, enemyMonster);
-          if(!myMonster.getBattle()){
-            i++;
-          }
-        }else{
-          j++;
+    MyMonster my = myMonsters.get(0);
+    EnemyMonster enemy = enemyMonsters.get(0);
+
+    while(!myMonsters.isEmpty() && !enemyMonsters.isEmpty()) {
+    	my = myMonsters.get(0);
+    	enemy = enemyMonsters.get(0);
+        while(my.getBattle() && enemy.getBattle()) {
+    	    if(my.agility > enemy.agility){
+    		    my.attack(enemy, my);
+    		    if(enemy.getBattle()) {
+    			    enemy.attack(my, enemy);
+    			    if(!my.getBattle()) {
+    				    myMonsters.remove(0);
+    			    }
+    		    }else {
+    			    enemyMonsters.remove(0);
+    		    }
+    	    }else if(enemy.agility > my.agility){
+    		    enemy.attack(my, enemy);
+    		    if(my.getBattle()) {
+    			    my.attack(enemy, my);
+    			    if(!enemy.getBattle()) {
+    				    enemyMonsters.remove(0);
+    			    }
+    		    }else {
+    			    myMonsters.remove(0);
+    		    }
+    	    }
+    	    System.out.println("コマンドを入力>");
+    	    int c = nextCommand();
+    	    if(c > 0) {
+    	    	System.out.println(c + "番と交代！");
+    	    	MyMonster tmp = myMonsters.get(0);
+    	    	myMonsters.set(0, myMonsters.get(c));
+    	    	myMonsters.set(c, tmp);
+    	    }
         }
-      }
-      
-      if(myMonster.agility < enemyMonster.agility) {
-        enemyMonster.attack(myMonster, enemyMonster);
-        if(myMonster.getBattle()) {
-          myMonster.attack(enemyMonster, myMonster);
-          if(!enemyMonster.getBattle()){
-            j++;
-          }
-        }
-        else{
-          i++;
-        }
-      }
-    isWin(myMonsters, enemyMonsters);
     }
+//    isWin(myMonsters, enemyMonsters);
+    System.out.println("END");
+  }
+
+  public static int nextCommand() {
+	  Scanner scanner = new Scanner(System.in);
+	  int command = Integer.MIN_VALUE;
+	  if(scanner.hasNextInt()) {
+		  switch(scanner.nextInt()) {
+		  case 1: //たたかう
+			  break;
+		  case 2: //にげる
+			  System.out.println("うまくにげきれた！");
+			  System.exit(0);
+			  break;
+		  case 3: //交代
+			  System.out.println("何番と交代する？");
+			  command = scanner.nextInt();
+			  break;
+		  default:
+			  System.out.println("1, 2, 3のいずれかを入力してください");
+			  nextCommand(); //これやばそう
+			  break;
+		  }
+	  }
+	  return command;
   }
 
   public static void isWin(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters){
