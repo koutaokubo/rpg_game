@@ -17,7 +17,6 @@ public class Main {
   public static void letsBattle(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters){
     int selectNumber;
     int command;
-    ArrayList<MyMonster> myMonstersCopy = new ArrayList<MyMonster>(myMonsters);
 
     firstAttack(myMonsters.get(0), enemyMonsters.get(0));
 
