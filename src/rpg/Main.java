@@ -8,6 +8,7 @@ import field.Field;
 public class Main {
   public static void main(String[] args) {
     Field field = new Field(4);
+
     ArrayList<MyMonster> myMonsters = new ArrayList<>(){
       {
         add(new MyMonster("my1", 100, 100,30, 30, 15));

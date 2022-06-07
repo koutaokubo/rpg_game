@@ -9,8 +9,9 @@ public class Field {
   public Field(int number){
     enemyMonsters = createEnemyMonsters(number);
   }
-  public ArrayList<EnemyMonster> monsters = new ArrayList<>(){
+  public ArrayList<EnemyMonster> monsters = new ArrayList<EnemyMonster>(){
     {
+
       add(new EnemyMonster("ene1", 70, 70, 40, 10, 3));
       add(new EnemyMonster("ene2", 70, 70, 40, 10, 3));
       add(new EnemyMonster("ene3", 70, 70, 40, 10, 3));
