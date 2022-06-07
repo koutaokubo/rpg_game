@@ -10,16 +10,16 @@ public class Main {
     Field field = new Field(4);
     TeamMember teamMember = new TeamMember(4);
 
-    ArrayList<MyMonster> myMonsters = new ArrayList<MyMonster>(){
-      {
-        add(new MyMonster("my1", 100, 100,30, 30, 15, 1));
-        add(new MyMonster("my2", 100, 100,30, 30, 15 ,1));
-        add(new MyMonster("my3", 100, 100,30, 30, 15 ,1));
-        add(new MyMonster("my4", 100, 100,30, 30, 15, 1 ));
-        add(new MyMonster("my5", 100, 100,30, 30, 15, 1));
-        add(new MyMonster("my6", 100, 100,30, 30, 15, 1));
-      }
-    };
+    // ArrayList<MyMonster> myMonsters = new ArrayList<MyMonster>(){
+    //   {
+    //     add(new MyMonster("my1", 100, 100,30, 30, 15, 1));
+    //     add(new MyMonster("my2", 100, 100,30, 30, 15 ,1));
+    //     add(new MyMonster("my3", 100, 100,30, 30, 15 ,1));
+    //     add(new MyMonster("my4", 100, 100,30, 30, 15, 1 ));
+    //     add(new MyMonster("my5", 100, 100,30, 30, 15, 1));
+    //     add(new MyMonster("my6", 100, 100,30, 30, 15, 1));
+    //   }
+    // };
 
     letsBattle(teamMember.myMonsters, field.enemyMonsters);
   }
