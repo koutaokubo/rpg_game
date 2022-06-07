@@ -2,6 +2,7 @@ package rpg;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Scanner;
 import field.Field;
 
@@ -164,6 +165,24 @@ public class Main {
       enemyMonster.attack(myMonster, enemyMonster);
       if(myMonster.getBattle()){
         myMonster.attack(enemyMonster, myMonster);
+      }
+    }else{
+      Random rand = new Random();
+      int num = rand.nextInt(2);
+      if (num == 0){
+        if(myMonster.getBattle() && enemyMonster.getBattle()){
+          myMonster.attack(enemyMonster, myMonster);
+          if(enemyMonster.getBattle()){
+            enemyMonster.attack(myMonster, enemyMonster);
+          }
+        }
+      }else{
+        if(enemyMonster.getBattle() && myMonster.getBattle()){
+          enemyMonster.attack(myMonster, enemyMonster);
+          if(myMonster.getBattle()){
+            myMonster.attack(enemyMonster, myMonster);
+          }
+        }
       }
     }
     
