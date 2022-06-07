@@ -32,12 +32,12 @@ public class Main {
     
     //　① Monsterがいるかどうか
     while(!myMonsters.isEmpty() && !enemyMonsters.isEmpty()){
-      MyMonster myMonster = myMonsters.get(i);
-      EnemyMonster enemyMonster = enemyMonsters.get(j);
-
+      
       // 敵味方どちらも残存している時
-      if(i <= myMonsters.size() && j <= enemyMonsters.size()){
-
+      if(i < myMonsters.size() && j < enemyMonsters.size()){
+        MyMonster myMonster = myMonsters.get(i);
+        EnemyMonster enemyMonster = enemyMonsters.get(j);
+        
         // 1. Monsterの攻撃(myが速い版)
         if(myMonster.agility > enemyMonster.agility){
           myMonster.attack(enemyMonster, myMonster);
@@ -66,7 +66,7 @@ public class Main {
         }
         
         // 3. 選択肢
-        if(myMonster.getBattle() && enemyMonster.getBattle()){
+        if(!myMonsters.isEmpty() && !enemyMonsters.isEmpty()){
           switch(battleCommand()){
             case 1:
             break;
@@ -81,11 +81,10 @@ public class Main {
           break;
           }
         }
-
       // 
-      }else if(i > myMonsters.size() && j <= enemyMonsters.size() || i > myMonsters.size() && j > enemyMonsters.size()){
+      }else if((i == myMonsters.size() && j < enemyMonsters.size()) || (i == myMonsters.size() && j >= enemyMonsters.size())){
         myMonsters.clear();
-      }else if(i <= myMonsters.size() && j > enemyMonsters.size()){
+      }else if(i < myMonsters.size() && j == enemyMonsters.size()){
         enemyMonsters.clear();
       }
     }
