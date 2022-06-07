@@ -7,20 +7,21 @@ import field.Field;
 public class Main {
   public static void main(String[] args) {
     Field field = new Field(4);
+    TeamMember teamMember = new TeamMember(4);
     // MyMonster myMonster = new MyMonster("my1", 1200, 1200, 80, 20, 32);
-    ArrayList<MyMonster> myMonsters = new ArrayList<>(){
-      {
-        add(new MyMonster("my1", 100, 100,30, 30, 15));
-        add(new MyMonster("my2", 100, 100,30, 30, 15));
-        add(new MyMonster("my3", 100, 100,30, 30, 15));
-        add(new MyMonster("my4", 100, 100,30, 30, 15));
-        add(new MyMonster("my5", 100, 100,30, 30, 15));
-        add(new MyMonster("my6", 100, 100,30, 30, 15));
-      }
-    };
+    // ArrayList<MyMonster> myMonsters = new ArrayList<MyMonster>(){
+    //   {
+    //     add(new MyMonster("my1", 100, 100,30, 30, 15));
+    //     add(new MyMonster("my2", 100, 100,30, 30, 15));
+    //     add(new MyMonster("my3", 100, 100,30, 30, 15));
+    //     add(new MyMonster("my4", 100, 100,30, 30, 15));
+    //     add(new MyMonster("my5", 100, 100,30, 30, 15));
+    //     add(new MyMonster("my6", 100, 100,30, 30, 15));
+    //   }
+    // };
     // EnemyMonster enemyMonster = new EnemyMonster("ene1", 100, 100, 70, 10, 35);
 
-    letsBattle(myMonsters, field.enemyMonsters);
+    letsBattle(teamMember.myMonsters, field.enemyMonsters);
   }
 
   public static void letsBattle(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters){
