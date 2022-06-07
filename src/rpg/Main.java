@@ -25,8 +25,6 @@ public class Main {
   }
 
   public static void letsBattle(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters){
-    int i = 0;
-    int j = 0;
     MyMonster my = myMonsters.get(0);
     EnemyMonster enemy = enemyMonsters.get(0);
 
@@ -40,9 +38,11 @@ public class Main {
     			    enemy.attack(my, enemy);
     			    if(!my.getBattle()) {
     				    myMonsters.remove(0);
+    				    System.out.println(my.getName() + " は倒されてしまった・・・");
     			    }
     		    }else {
     			    enemyMonsters.remove(0);
+    			    System.out.println(enemy.getName() + " を倒した！");
     		    }
     	    }else if(enemy.agility > my.agility){
     		    enemy.attack(my, enemy);
@@ -50,15 +50,17 @@ public class Main {
     			    my.attack(enemy, my);
     			    if(!enemy.getBattle()) {
     				    enemyMonsters.remove(0);
+        			    System.out.println(enemy.getName() + " を倒した！");
     			    }
     		    }else {
     			    myMonsters.remove(0);
+				    System.out.println(my.getName() + " は倒されてしまった・・・");
     		    }
     	    }
     	    System.out.println("コマンドを入力>");
     	    int c = nextCommand();
     	    if(c > 0) {
-    	    	System.out.println(c + "番と交代！");
+    	    	System.out.println(myMonsters.get(c).getName() + "と交代！");
     	    	MyMonster tmp = myMonsters.get(0);
     	    	myMonsters.set(0, myMonsters.get(c));
     	    	myMonsters.set(c, tmp);
@@ -86,7 +88,7 @@ public class Main {
 			  break;
 		  default:
 			  System.out.println("1, 2, 3のいずれかを入力してください");
-			  nextCommand(); //これやばそう
+			  nextCommand();
 			  break;
 		  }
 	  }
