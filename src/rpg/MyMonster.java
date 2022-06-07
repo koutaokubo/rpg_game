@@ -33,6 +33,9 @@ public class MyMonster extends Monster {
     int damage = (myMonster.attack_power / 2) - (enemyMonster.defense_power / 4);
     enemyHp -= damage;
     enemyMonster.setHp(enemyHp);
+    if(enemyHp < 0){
+      enemyHp = 0;
+    }
     System.out.println(enemyMonster.name + "へ" + damage + "のダメージ。残り体力は" + enemyHp);
   }
 
