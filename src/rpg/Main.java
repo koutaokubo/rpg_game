@@ -2,6 +2,8 @@ package rpg;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import rpg.Monster;
+
 import field.Field;
 
 public class Main {
@@ -20,50 +22,83 @@ public class Main {
     };
     // EnemyMonster enemyMonster = new EnemyMonster("ene1", 100, 100, 70, 10, 35);
 
+    
     letsBattle(myMonsters, field.enemyMonsters);
   }
 
   public static void letsBattle(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters){
     int i = 0;
     int j = 0;
-    while(myMonsters.get(myMonsters.size() -1).getBattle() && enemyMonsters.get(enemyMonsters.size() -1).getBattle()){
+    
+    //　① Monsterがいるかどうか
+    while(!myMonsters.isEmpty() && !enemyMonsters.isEmpty()){
       MyMonster myMonster = myMonsters.get(i);
       EnemyMonster enemyMonster = enemyMonsters.get(j);
-      if(myMonster.agility > enemyMonster.agility){
-        myMonster.attack(enemyMonster, myMonster);
-        if(enemyMonster.getBattle()){
-          enemyMonster.attack(myMonster, enemyMonster);
-          if(!myMonster.getBattle()){
-            i++;
-          }
-        }else{
-          j++;
-        }
-      }
-      
-      if(myMonster.agility < enemyMonster.agility) {
-        enemyMonster.attack(myMonster, enemyMonster);
-        if(myMonster.getBattle()) {
+
+      // 敵味方どちらも残存している時
+      if(i <= myMonsters.size() && j <= enemyMonsters.size()){
+
+        // 1. Monsterの攻撃(myが速い版)
+        if(myMonster.agility > enemyMonster.agility){
           myMonster.attack(enemyMonster, myMonster);
-          if(!enemyMonster.getBattle()){
+          if(enemyMonster.getBattle()){
+            enemyMonster.attack(myMonster, enemyMonster);
+            if(!myMonster.getBattle()){
+              i++;
+            }
+          }else{
             j++;
           }
         }
-        else{
-          i++;
+        
+        // 2. Monsterの攻撃(myが遅い版)
+        if(myMonster.agility < enemyMonster.agility) {
+          enemyMonster.attack(myMonster, enemyMonster);
+          if(myMonster.getBattle()) {
+            myMonster.attack(enemyMonster, myMonster);
+            if(!enemyMonster.getBattle()){
+              j++;
+            }
+          }
+          else{
+            i++;
+          }
         }
+        
+        // 3. 選択肢
+        if(myMonster.getBattle() && enemyMonster.getBattle()){
+          switch(battleCommand()){
+            case 1:
+            break;
+            case 2:
+            System.out.println("戦闘を終了します");
+            myMonsters.clear();
+            enemyMonsters.clear();
+            break;
+          case 3:
+          System.out.println("交代先を選んでください");
+          
+          break;
+          }
+        }
+
+      // 
+      }else if(i > myMonsters.size() && j <= enemyMonsters.size() || i > myMonsters.size() && j > enemyMonsters.size()){
+        myMonsters.clear();
+      }else if(i <= myMonsters.size() && j > enemyMonsters.size()){
+        enemyMonsters.clear();
       }
-    isWin(myMonsters, enemyMonsters);
     }
+    isWin(myMonsters, enemyMonsters);
   }
 
   public static void isWin(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters){
-    if(!myMonsters.get(myMonsters.size() -1).getBattle() && enemyMonsters.get(enemyMonsters.size() - 1).getBattle()){
+    if((myMonsters.isEmpty() && !enemyMonsters.isEmpty()) || (!myMonsters.isEmpty() && !enemyMonsters.isEmpty())){
       System.out.println("敗北しました");
       return;
     }
 
-    if(!enemyMonsters.get(enemyMonsters.size() - 1).getBattle() && myMonsters.get(myMonsters.size() - 1).getBattle()){
+    if(!myMonsters.isEmpty() && enemyMonsters.isEmpty()){
       int selectCommand = inputCommand();
       if(selectCommand == 1){
         isContinue(myMonsters);
@@ -95,6 +130,58 @@ public class Main {
       scanner.close();
     }
   }
+
+    public static int battleCommand(){
+    System.out.println("どうする？");
+    Scanner scanner = new Scanner(System.in);
+    while(true) {
+      System.out.println("たたかう：１　にげる：２　こうたい：３");
+      if(scanner.hasNextInt()){
+        int selectCommand = scanner.nextInt();
+        if(selectCommand < 1 || selectCommand > 3){
+          System.out.println("数値は1,2,3のどれかを入力してください");
+          continue;
+        } else {
+          return selectCommand;
+        }
+      } else {
+        System.out.println("数値を入力してください");
+        scanner.next();
+      }
+      scanner.close();
+    }
+  }
+
+  // public static void nextBattle(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters){
+	// int i = 0;
+	// int j = 0;
+  //   MyMonster myMonster = myMonsters.get(i);
+  //   EnemyMonster enemyMonster = enemyMonsters.get(j);
+  //     if(myMonster.agility > enemyMonster.agility){
+  //       myMonster.attack(enemyMonster, myMonster);
+  //       if(enemyMonster.getBattle()){
+  //         enemyMonster.attack(myMonster, enemyMonster);
+  //         if(!myMonster.getBattle()){
+  //           i++;
+  //         }
+  //       }else{
+  //         j++;
+  //       }
+  //     }
+      
+  //     if(myMonster.agility < enemyMonster.agility) {
+  //       enemyMonster.attack(myMonster, enemyMonster);
+  //       if(myMonster.getBattle()) {
+  //         myMonster.attack(enemyMonster, myMonster);
+  //         if(!enemyMonster.getBattle()){
+  //           j++;
+  //         }
+  //       }
+  //       else{
+  //         i++;
+  //       }
+  //     }
+  // }
 
   public static void recovery(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters) {
     // enemyMonster.hp = enemyMonster.max_hp;
