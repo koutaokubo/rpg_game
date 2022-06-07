@@ -81,7 +81,9 @@ public class Main {
     }
 
     if(!myMonsters.isEmpty() && enemyMonsters.isEmpty()){
+      TeamMember.money += 100;
       int selectCommand = inputCommand();
+      //todo 買い物コマンド追加する・アイテム使用機能追加する
       if(selectCommand == 1){
         Field.plusBattleCount();
         isContinue(myMonsters);

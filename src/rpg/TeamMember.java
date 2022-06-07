@@ -4,6 +4,7 @@ import item.ItemBox;
 public class TeamMember {
   public static ArrayList<MyMonster> myMonsters;
   public static ItemBox itemBox;
+  public static int money;
 
   public TeamMember(int number){
     myMonsters = createMyMonsters(number);
