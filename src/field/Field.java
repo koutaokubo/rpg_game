@@ -11,12 +11,12 @@ public class Field {
   }
   public ArrayList<EnemyMonster> monsters = new ArrayList<>(){
     {
-      add(new EnemyMonster("ene1", 100, 100, 70, 10, 3));
-      add(new EnemyMonster("ene2", 100, 100, 70, 10, 3));
-      add(new EnemyMonster("ene3", 100, 100, 70, 10, 3));
-      add(new EnemyMonster("ene4", 100, 100, 70, 10, 3));
-      add(new EnemyMonster("ene5", 100, 100, 70, 10, 3));
-      add(new EnemyMonster("ene6", 100, 100, 70, 10, 3));
+      add(new EnemyMonster("ene1", 70, 70, 40, 10, 3));
+      add(new EnemyMonster("ene2", 70, 70, 40, 10, 3));
+      add(new EnemyMonster("ene3", 70, 70, 40, 10, 3));
+      add(new EnemyMonster("ene4", 70, 70, 40, 10, 3));
+      add(new EnemyMonster("ene5", 70, 70, 40, 10, 3));
+      add(new EnemyMonster("ene6", 70, 70, 40, 10, 3));
     }
   };
 

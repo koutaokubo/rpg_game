@@ -19,13 +19,14 @@ public class Main {
       }
     };
 
-    firstAttack(myMonsters.get(0), field.enemyMonsters.get(0));
     letsBattle(myMonsters, field.enemyMonsters);
   }
 
   public static void letsBattle(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters){
     int selectNumber;
     int command;
+
+    firstAttack(myMonsters.get(0), enemyMonsters.get(0));
 
     while(!myMonsters.isEmpty() && !enemyMonsters.isEmpty()){
       if(!myMonsters.get(0).getBattle()){
@@ -35,7 +36,7 @@ public class Main {
         enemyMonsters.remove(0);
       }
       if(myMonsters.isEmpty() || enemyMonsters.isEmpty()){
-        return;
+        break;
       }
       MyMonster myMonster = myMonsters.get(0);
       EnemyMonster enemyMonster = enemyMonsters.get(0);
@@ -53,18 +54,21 @@ public class Main {
           break;
       }
     }
-    
+    System.out.println("戦闘終了");
     isWin(myMonsters, enemyMonsters);
   }
 
 
   public static void isWin(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters){
-    if(!myMonsters.get(myMonsters.size() -1).getBattle() && enemyMonsters.get(enemyMonsters.size() - 1).getBattle()){
+    // if(!myMonsters.get(myMonsters.size() -1).getBattle() && enemyMonsters.get(enemyMonsters.size() - 1).getBattle()){
+    //   System.out.println("敗北しました");
+    //   return;
+    // }
+    if(myMonsters.isEmpty() && !enemyMonsters.isEmpty()){
       System.out.println("敗北しました");
-      return;
     }
 
-    if(!enemyMonsters.get(enemyMonsters.size() - 1).getBattle() && myMonsters.get(myMonsters.size() - 1).getBattle()){
+    if(!myMonsters.isEmpty() && enemyMonsters.isEmpty()){
       int selectCommand = inputCommand();
       if(selectCommand == 1){
         isContinue(myMonsters);
@@ -78,11 +82,11 @@ public class Main {
 
   public static int inputCommand(){
     System.out.println("勝利しました");
-    Scanner scanner = new Scanner(System.in);
+    Scanner scan = new Scanner(System.in);
     while(true) {
       System.out.println("戦闘を続けますか？　続ける：１　回復して続ける：２　終了する：３");
-      if(scanner.hasNextInt()){
-        int selectCommand = scanner.nextInt();
+      if(scan.hasNextInt()){
+        int selectCommand = scan.nextInt();
         if(selectCommand < 1 || selectCommand > 3){
           System.out.println("数値は1,2,3のどれかを入力してください");
           continue;
@@ -91,9 +95,9 @@ public class Main {
         }
       } else {
         System.out.println("数値を入力してください");
-        scanner.next();
+        scan.next();
       }
-      scanner.close();
+      scan.close();
     }
   }
 
@@ -141,6 +145,7 @@ public class Main {
   public static void recovery(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters) {
     // enemyMonster.hp = enemyMonster.max_hp;
     myMonsters.forEach(myMonster -> myMonster.hp = myMonster.max_hp);
+    enemyMonsters.forEach(enemyMonster -> enemyMonster.hp = enemyMonster.max_hp);
     isContinue(myMonsters);
   }
 
