@@ -13,7 +13,7 @@ public class MyMonster extends Monster{
 
   public void gainExp(int exp){
     setExp(getExp()+exp);
-    if(getExp()>getLevel()*100){
+    if(getExp() > (getLevel() * 100)){
       levelUp();
     }
   }
@@ -39,7 +39,7 @@ public class MyMonster extends Monster{
     System.out.println(enemyMonster.name + "へ" + damage + "のダメージ。残り体力は" + enemyHp);
   }
 
-  public MyMonster(String name, int hp, int max_hp, int attack_power, int defense_power, int agility, int level){
-    super(name,hp,max_hp,attack_power,defense_power,agility,level);
+  public MyMonster(String name, int max_hp, int attack_power, int defense_power, int agility, int level){
+    super(name,max_hp,attack_power,defense_power,agility,level);
   }
 }
