@@ -32,6 +32,8 @@ public class Main {
     do{
       MyMonster myMonster = myMonsters.get(0);
       EnemyMonster enemyMonster = enemyMonsters.get(0);
+
+      //todo 現在戦闘中のモンスターの名前とHPを表示させる
       int currentLevel = myMonster.getLevel();
       firstAttack(myMonster, enemyMonster);
 
@@ -140,8 +142,8 @@ public class Main {
         System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３  ボスと戦う：４");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt(); 
-          if(selectCommand < 1 || selectCommand > 4){
-            System.out.println("数値は1,2,3,4のどれかを入力してください");
+          if(selectCommand < 0 || selectCommand > 4){
+            System.out.println("数値は0,1,2,3,4のどれかを入力してください");
             continue;
           } else {
             return selectCommand;
@@ -185,7 +187,6 @@ public class Main {
           System.out.println("数値を入力してください");
           scanner.next();
         }
-        scanner.close();
     }
   }
 
@@ -205,7 +206,6 @@ public class Main {
         System.out.println("数値を入力してください");
         scanner.next();
       }
-      scanner.close();
     }
   }
 
