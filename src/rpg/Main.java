@@ -84,6 +84,7 @@ public class Main {
       TeamMember.money += 100;
       int selectCommand = inputCommand();
       //todo 買い物コマンド追加する・アイテム使用機能追加する
+      if(selectCommand == 0) return;
       if(selectCommand == 1){
         Field.plusBattleCount();
         isContinue(myMonsters);
@@ -104,9 +105,10 @@ public class Main {
     Scanner scan = new Scanner(System.in);
     while(true) {
       if(Field.battleCount >= 3){
-        System.out.println("戦闘を続けますか？　たたかう：１　回復して続ける：２　終了する：３  ボスと戦う：４");
+
+        System.out.println("戦闘を続けますか？　続ける：１　回復して続ける：２　終了する：３  ボスと戦う：４");
         if(scan.hasNextInt()){
-          int selectCommand = scan.nextInt();
+          int selectCommand = scan.nextInt(); 
           if(selectCommand < 1 || selectCommand > 4){
             System.out.println("数値は1,2,3,4のどれかを入力してください");
             continue;
@@ -118,7 +120,7 @@ public class Main {
           scan.next();
         }
         scan.close();
-      }else{
+      }
         System.out.println("戦闘を続けますか？　続ける：１　回復して続ける：２　終了する：３");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt();
@@ -133,7 +135,6 @@ public class Main {
           scan.next();
         }
         scan.close();
-      }
     }
   }
 
