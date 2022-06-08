@@ -62,7 +62,6 @@ public abstract class Item {
         System.out.println("数値を入力してください");
         scanner.next();
       }
-      scanner.close();
     }
   }
 }
