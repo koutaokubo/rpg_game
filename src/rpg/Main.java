@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 import field.BossField;
 import field.Field;
+import item.Attacker;
+import item.Item;
 import item.ItemBox;
 import item.ShopList;
 
@@ -16,8 +18,8 @@ public class Main {
     TeamMember teamMember = new TeamMember(6);
 
     //todo teamMemberがstaticになっているので変更するかどうか検討
-    // Item item = new Attacker(1);
-    // TeamMember.itemBox.add(item);
+    Item item = new Attacker(1);
+    TeamMember.itemBox.add(item);
     letsBattle(teamMember.myMonsters, field.enemyMonsters, false);
   }
 

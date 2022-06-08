@@ -31,6 +31,7 @@ public class Defender extends Item{
 
   public void buyItems(){
     setStock(stock + 1);
+
     System.out.println(itemName+ "の所持数" + getStock() + "個");
   }
 }
