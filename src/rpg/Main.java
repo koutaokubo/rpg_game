@@ -241,6 +241,5 @@ public class Main {
     System.out.println("");
     System.out.println("");
     System.out.println("Special Thanks to Neiro♪");
-    // java.awt.Toolkit.getDefaultToolkit().beep();
   }
 }

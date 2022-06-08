@@ -12,15 +12,6 @@ public class Field {
   }
   public ArrayList<EnemyMonster> monsters = new ArrayList<EnemyMonster>(){
     {
-<<<<<<< HEAD
-
-      add(new EnemyMonster("ene1", 100, 100, 70, 10, 3, 1));
-      add(new EnemyMonster("ene2", 100, 100, 70, 10, 3, 1));
-      add(new EnemyMonster("ene3", 100, 100, 70, 10, 3, 1));
-      add(new EnemyMonster("ene4", 100, 100, 70, 10, 3, 1));
-      add(new EnemyMonster("ene5", 100, 100, 70, 10, 3, 1));
-      add(new EnemyMonster("ene6", 100, 100, 70, 10, 3, 1));
-=======
       add(new EnemyMonster("ene1", 70, 10, 10, 15, 1));
       add(new EnemyMonster("ene2", 70, 10, 10, 3, 1));
       add(new EnemyMonster("ene3", 70, 10, 10, 3, 1));
@@ -28,7 +19,6 @@ public class Field {
       add(new EnemyMonster("ene5", 70, 10, 10, 3, 1));
       add(new EnemyMonster("ene6", 70, 10, 10, 3, 1));
       add(new EnemyMonster("Boss", 30, 150, 10, 0, 15));
->>>>>>> fromK
     }
   };
 
