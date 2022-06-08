@@ -6,6 +6,9 @@ import java.util.Random;
 import java.util.Scanner;
 import field.BossField;
 import field.Field;
+import item.Attacker;
+import item.Item;
+import item.ItemBox;
 
 public class Main {
   public static void main(String[] args) {
@@ -13,6 +16,8 @@ public class Main {
     TeamMember teamMember = new TeamMember(6);
 
     //todo teamMemberがstaticになっているので変更するかどうか検討
+    Item item = new Attacker(1);
+    TeamMember.itemBox.add(item);
     letsBattle(teamMember.myMonsters, field.enemyMonsters, false);
   }
 
@@ -91,7 +96,14 @@ public class Main {
       }else if(selectCommand == 2){
         recovery(myMonsters, enemyMonsters);
       }else if(selectCommand == 3){
-        return;
+        if(TeamMember.itemBox.size() == 0){
+          System.out.println("アイテムがありません");
+          return;
+        }
+        System.out.println("使用するアイテムを選択してください");
+        TeamMember.itemBox.showList();
+        int index = selectItemIndex(TeamMember.itemBox);
+        TeamMember.itemBox.useItem(index);
       }else if(selectCommand == 4){
         BossField bossField = new BossField();
         // firstAttack(myMonsters.get(0),bossField.enemyMonsters.get(0));
@@ -100,12 +112,31 @@ public class Main {
     }
   }
 
+  public static int selectItemIndex(ItemBox itemBox){
+    Scanner scanner = new Scanner(System.in);
+    while(true) {
+        if(scanner.hasNextInt()){
+          int selectCommand = scanner.nextInt(); 
+          if(selectCommand < 1 || selectCommand > itemBox.size()){
+            System.out.println("数値は1 ~ " + itemBox.size() + "のどれかを入力してください");
+            continue;
+          } else {
+            return selectCommand - 1;
+          }
+        } else {
+          System.out.println("数値を入力してください");
+          scanner.next();
+        }
+        scanner.close();
+    }
+  }
+
   public static int inputCommand(){
     System.out.println("勝利しました");
     Scanner scan = new Scanner(System.in);
     while(true) {
       if(Field.battleCount >= 3){
-        System.out.println("戦闘を続けますか？　続ける：１　回復して続ける：２　終了する：３  ボスと戦う：４");
+        System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３  ボスと戦う：４");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt(); 
           if(selectCommand < 1 || selectCommand > 4){
@@ -120,7 +151,7 @@ public class Main {
         }
         scan.close();
       }
-        System.out.println("戦闘を続けますか？　続ける：１　回復して続ける：２　終了する：３");
+        System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt();
           if(selectCommand < 1 || selectCommand > 3){
