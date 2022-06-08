@@ -277,6 +277,7 @@ public class Main {
         }
       }
     }
+  }
 
 
   public static void changeMonster(ArrayList<MyMonster> myMonsters, int currentNumber, int selectNumber){
