@@ -43,7 +43,8 @@ public class Mew extends Monster2{
             	enemyMonster.setPP(enemyMonster.getPP() - 1);
             }
 
-            System.out.println("ミュウの サイコキネシス！");
+            System.out.println(myMonster.getName() + " の サイコキネシス！");
+            System.out.println(enemyMonster.getName() + " の特殊技のPPが1減らされた！");
             System.out.println(enemyMonster.name + "へ" + damage + "のダメージ！残り体力は" + enemyHp);
     	}else {
     		System.out.println("サイコキネシスのPPが足りない！");

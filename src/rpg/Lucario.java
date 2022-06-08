@@ -42,6 +42,7 @@ public class Lucario extends Monster2{
             myMonster.setDefenseRise(myMonster.getDefenseRise() - 3);
 
             System.out.println(myMonster.getName() + " の インファイト！");
+            System.out.println(myMonster.getName() + " の防御力が下がった！");
             System.out.println(enemyMonster.name + "へ" + damage + "のダメージ！残り体力は" + enemyHp);
     	}else {
     		System.out.println("インファイトのPPが足りない！");
