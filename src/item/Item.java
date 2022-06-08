@@ -19,7 +19,7 @@ public abstract class Item {
   public abstract void useItem();
 
   public String toString(){
-    return (this.itemName+ "所持数 " + this.stock );
+    return (this.itemName + " (所持数 " + this.stock + ")" );
   }
 
   public void setItemName(String itemName){
@@ -62,7 +62,6 @@ public abstract class Item {
         System.out.println("数値を入力してください");
         scanner.next();
       }
-      scanner.close();
     }
   }
 }
