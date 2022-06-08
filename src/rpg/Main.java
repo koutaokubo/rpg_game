@@ -9,6 +9,7 @@ import field.Field;
 import item.Attacker;
 import item.Item;
 import item.ItemBox;
+import item.ShopList;
 
 public class Main {
   public static void main(String[] args) {
@@ -16,8 +17,8 @@ public class Main {
     TeamMember teamMember = new TeamMember(6);
 
     //todo teamMemberがstaticになっているので変更するかどうか検討
-    Item item = new Attacker(1);
-    TeamMember.itemBox.add(item);
+    // Item item = new Attacker(1);
+    // TeamMember.itemBox.add(item);
     letsBattle(teamMember.myMonsters, field.enemyMonsters, false);
   }
 
@@ -107,7 +108,13 @@ public class Main {
         int index = selectItemIndex(TeamMember.itemBox);
         TeamMember.itemBox.useItem(index);
         isContinue(myMonsters);
-      }else if(selectCommand == 4){
+      }else if(selectCommand == 4) {
+        System.out.println("購入するアイテムを選択してください");
+        TeamMember.shopList.showList();
+        int index = buyItemIndex(TeamMember.shopList);
+        TeamMember.shopList.buyItems(index);
+        isContinue(myMonsters);
+      }else if(selectCommand == 5){
         BossField bossField = new BossField();
         // firstAttack(myMonsters.get(0),bossField.enemyMonsters.get(0));
         letsBattle(myMonsters, bossField.enemyMonsters, true);
@@ -134,12 +141,31 @@ public class Main {
     }
   }
 
+  public static int buyItemIndex(ShopList shopList){
+    Scanner scanner = new Scanner(System.in);
+    while(true) {
+        if(scanner.hasNextInt()){
+          int selectCommand = scanner.nextInt(); 
+          if(selectCommand < 1 || selectCommand > shopList.size()){
+            System.out.println("数値は1 ~ " + shopList.size() + "のどれかを入力してください");
+            continue;
+          } else {
+            return selectCommand - 1;
+          }
+        } else {
+          System.out.println("数値を入力してください");
+          scanner.next();
+        }
+        scanner.close();
+    }
+  }
+
   public static int inputCommand(){
     System.out.println("勝利しました");
     Scanner scan = new Scanner(System.in);
     while(true) {
       if(Field.battleCount >= 3){
-        System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３  ボスと戦う：４");
+        System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３  買い物：4　ボスと戦う：5");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt(); 
           if(selectCommand < 0 || selectCommand > 4){
@@ -154,10 +180,10 @@ public class Main {
         }
         scan.close();
       }
-        System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３");
+        System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３ 買い物：４");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt();
-          if(selectCommand < 1 || selectCommand > 3){
+          if(selectCommand < 1 || selectCommand > 4){
             System.out.println("数値は1,2,3のどれかを入力してください");
             continue;
           } else {
@@ -268,8 +294,11 @@ public class Main {
 
   public static void clearBoss(){
     System.out.println("ボスモンスターに勝利した！！");
-    System.out.println("こうして世界は平和になった");
+    System.out.println("こうして世界は平和になった！！");
     System.out.println("Thank you for playing!!");
-    System.out.println("special thanks to Neiro♪");
+    System.out.println("");
+    System.out.println("");
+    System.out.println("");
+    System.out.println("Special Thanks to Neiro♪");
   }
 }

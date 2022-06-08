@@ -17,9 +17,10 @@ public abstract class Item {
   }
 
   public abstract void useItem();
+  public abstract void buyItems();
 
   public String toString(){
-    return (this.itemName + " (所持数 " + this.stock + ")" );
+    return (this.itemName);
   }
 
   public void setItemName(String itemName){
