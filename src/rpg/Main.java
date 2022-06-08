@@ -21,7 +21,7 @@ public class Main {
     letsBattle(teamMember.myMonsters, field.enemyMonsters, false);
   }
 
-  public static void letsBattle(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters, boolean isBoss){
+  public static void letsBattle(ArrayList<Monster2> myMonsters, ArrayList<Monster2> enemyMonsters, boolean isBoss){
     int selectNumber;
     int command;
     ArrayList<Integer> initialLevel = new ArrayList<Integer>();
@@ -30,8 +30,8 @@ public class Main {
     // firstAttack(myMonsters.get(0), enemyMonsters.get(0));
 
     do{
-      MyMonster myMonster = myMonsters.get(0);
-      EnemyMonster enemyMonster = enemyMonsters.get(0);
+      Monster2 myMonster = myMonsters.get(0);
+      Monster2 enemyMonster = enemyMonsters.get(0);
 
       //todo 現在戦闘中のモンスターの名前とHPを表示させる
       int currentLevel = myMonster.getLevel();
@@ -77,7 +77,7 @@ public class Main {
   }
 
 
-  public static void isWin(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters){
+  public static void isWin(ArrayList<Monster2> myMonsters, ArrayList<Monster2> enemyMonsters){
     // if(!myMonsters.get(myMonsters.size() -1).getBattle() && enemyMonsters.get(enemyMonsters.size() - 1).getBattle()){
     //   System.out.println("敗北しました");
     //   return;
@@ -215,7 +215,7 @@ public class Main {
     }
   }
 
-  public static int changeMonsterNumber(ArrayList<MyMonster> myMonsters){
+  public static int changeMonsterNumber(ArrayList<Monster2> myMonsters){
     Scanner scanner = new Scanner(System.in);
     while(true) {
       System.out.println("交代するモンスターの番号を入力してください(1 ~ " + myMonsters.size() + ")");
@@ -235,7 +235,7 @@ public class Main {
   }
 
 
-  public static void recovery(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters) {
+  public static void recovery(ArrayList<Monster2> myMonsters, ArrayList<Monster2> enemyMonsters) {
     // enemyMonster.hp = enemyMonster.max_hp;
     TeamMember teamMember = new TeamMember(6);
     myMonsters.clear();
@@ -243,12 +243,12 @@ public class Main {
     isContinue(myMonsters);
   }
 
-  public static void isContinue(ArrayList<MyMonster> myMonsters){
-    ArrayList<EnemyMonster> nextEnemyMonsters = new Field(3).enemyMonsters;
+  public static void isContinue(ArrayList<Monster2> myMonsters){
+    ArrayList<Monster2> nextEnemyMonsters = new Field(3).enemyMonsters;
     letsBattle(myMonsters, nextEnemyMonsters, false);
   }
 
-  public static void firstAttack(MyMonster myMonster, EnemyMonster enemyMonster){
+  public static void firstAttack(Monster2 myMonster, Monster2 enemyMonster){
     if(myMonster.agility > enemyMonster.agility && myMonster.getBattle() && enemyMonster.getBattle()){
       myMonster.attack(enemyMonster, myMonster);
       if(enemyMonster.getBattle()){
@@ -281,11 +281,11 @@ public class Main {
 
   }
 
-  public static void changeMonster(ArrayList<MyMonster> myMonsters, int currentNumber, int selectNumber){
+  public static void changeMonster(ArrayList<Monster2> myMonsters, int currentNumber, int selectNumber){
     Collections.swap(myMonsters, currentNumber, selectNumber -1);
   }
 
-  public static void bossBattle(ArrayList<EnemyMonster> bossMonsters, ArrayList<MyMonster> myMonsters){
+  public static void bossBattle(ArrayList<Monster2> bossMonsters, ArrayList<Monster2> myMonsters){
     System.out.println("ボスモンスターが出現した");
     letsBattle(myMonsters, bossMonsters, true);
   }
