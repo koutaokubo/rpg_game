@@ -7,12 +7,13 @@ public abstract class Monster {
   protected int attack_power;
   protected int defense_power;
   protected int agility;
+  protected int level;
   protected boolean battle = true;
   protected int level;
 
-  public Monster(String name, int hp, int max_hp, int attack_power, int defense_power, int agility, int level){
+  public Monster(String name, int max_hp, int attack_power, int defense_power, int agility, int level){
     this.name = name;
-    this.hp = hp;
+    this.hp = max_hp;
     this.max_hp = max_hp;
     this.attack_power = attack_power;
     this.agility = agility;
@@ -38,6 +39,9 @@ public abstract class Monster {
   }
   public void setAgility(int agility) {
     this.agility = agility;
+  }
+  public void setLevel(int level){
+    this.level = level;
   }
   public void setBattle(){
     this.battle = this.hp > 0;
