@@ -60,7 +60,7 @@ public class Main {
           enemyMonsters.clear();
           return;
         case 3:
-          selectNumber = changeMonsterNumber();
+          selectNumber = changeMonsterNumber(myMonsters);
           changeMonster(myMonsters, 0, selectNumber);
           break;
       }
@@ -104,6 +104,7 @@ public class Main {
         TeamMember.itemBox.showList();
         int index = selectItemIndex(TeamMember.itemBox);
         TeamMember.itemBox.useItem(index);
+        isContinue(myMonsters);
       }else if(selectCommand == 4){
         BossField bossField = new BossField();
         // firstAttack(myMonsters.get(0),bossField.enemyMonsters.get(0));
@@ -188,14 +189,14 @@ public class Main {
     }
   }
 
-  public static int changeMonsterNumber(){
+  public static int changeMonsterNumber(ArrayList<MyMonster> myMonsters){
     Scanner scanner = new Scanner(System.in);
     while(true) {
-      System.out.println("交代するモンスターの番号を入力してください");
+      System.out.println("交代するモンスターの番号を入力してください(1 ~ " + myMonsters.size() + ")");
       if(scanner.hasNextInt()){
         int selectCommand = scanner.nextInt();
-        if(selectCommand < 0 || selectCommand > 5){
-          System.out.println("数値は0,1,2,3,4,5,のどれかを入力してください");
+        if(selectCommand < 1 || selectCommand > myMonsters.size()){
+          System.out.println("数値は1 ~ " + myMonsters.size() + "のどれかを入力してください");
           continue;
         } else {
           return selectCommand;
@@ -211,8 +212,9 @@ public class Main {
 
   public static void recovery(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters) {
     // enemyMonster.hp = enemyMonster.max_hp;
-    myMonsters.forEach(myMonster -> myMonster.hp = myMonster.max_hp);
-    enemyMonsters.forEach(enemyMonster -> enemyMonster.hp = enemyMonster.max_hp);
+    TeamMember teamMember = new TeamMember(6);
+    myMonsters.clear();
+    myMonsters.addAll(teamMember.myMonsters);
     isContinue(myMonsters);
   }
 
@@ -255,7 +257,7 @@ public class Main {
   }
 
   public static void changeMonster(ArrayList<MyMonster> myMonsters, int currentNumber, int selectNumber){
-    Collections.swap(myMonsters, currentNumber, selectNumber);
+    Collections.swap(myMonsters, currentNumber, selectNumber -1);
   }
 
   public static void bossBattle(ArrayList<EnemyMonster> bossMonsters, ArrayList<MyMonster> myMonsters){
@@ -265,5 +267,8 @@ public class Main {
 
   public static void clearBoss(){
     System.out.println("ボスモンスターに勝利した！！");
+    System.out.println("こうして世界は平和になった");
+    System.out.println("Thank you for playing!!");
+    System.out.println("special thanks to Neiro♪");
   }
 }
