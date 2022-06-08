@@ -33,4 +33,9 @@ public class Attacker extends Item{
     target.setAttackPower(target.getAttackPower() + 10);
     setStock(stock - 1);
   }
+
+  public void buyItems(){
+    setStock(stock + 1);
+    System.out.println(itemName+ "の所持数" + getStock() + "個");
+  }
 }
