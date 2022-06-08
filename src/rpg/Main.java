@@ -167,8 +167,8 @@ public class Main {
         System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３  買い物：4　ボスと戦う：5");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt();
-          if(selectCommand < 0 || selectCommand > 4){
-            System.out.println("数値は0,1,2,3,4のどれかを入力してください");
+          if(selectCommand < 0 || selectCommand > 5){
+            System.out.println("数値は0,1,2,3,4,5のどれかを入力してください");
             continue;
           } else {
             return selectCommand;
