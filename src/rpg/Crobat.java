@@ -42,7 +42,7 @@ public class Crobat extends Monster2{
               enemyHp = 0;
             }
 
-            System.out.println("クロバットの クロスポイズン！");
+            System.out.println(myMonster.getName() + " の クロスポイズン！");
             // ２分の１で大ダメージが出る
             if(critical == 2) {
             	System.out.println("大ダメージ！");

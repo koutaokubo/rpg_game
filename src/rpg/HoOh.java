@@ -29,7 +29,7 @@ public class HoOh extends Monster2{
     public void specialAttack(Monster2 enemyMonster, Monster2 myMonster) {
     	if(pp <= max_pp) {
 			int enemyHp = enemyMonster.getHp();
-			int damage = (int) (1.2 * ((myMonster.attack_power + myMonster.attack_rise) / 2
+			int damage = (int) (1.5 * ((myMonster.attack_power + myMonster.attack_rise) / 2
 					- ((enemyMonster.defense_power + enemyMonster.defense_rise) / 4)));
 			enemyHp -= damage;
 			enemyMonster.setHp(enemyHp);
@@ -37,9 +37,10 @@ public class HoOh extends Monster2{
 				enemyHp = 0;
 			}
 			// 相手の攻撃力を下げる
-			enemyMonster.setAttackRise(enemyMonster.getAttackRise() - 5);
+			enemyMonster.setAttackRise(enemyMonster.getAttackRise() - 15);
 
 			System.out.println("ホウオウの せいなるほのお！");
+			System.out.println(myMonster.getName() + "の攻撃力が下がった！");
 			System.out.println(enemyMonster.name + "へ" + damage + "のダメージ！残り体力は" + enemyHp);
     	}else {
     		System.out.println("せいなるほのおのPPが足りない！");

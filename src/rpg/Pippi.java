@@ -28,7 +28,7 @@ public class Pippi extends Monster2{
 
     // 特殊技を持たないので、specialAttackが呼ばれたら通常の攻撃に移行
     public void specialAttack(Monster2 enemyMonster, Monster2 myMonster) {
-    	System.out.println("ピッピは特殊技を持っていなかった！");
+    	System.out.println(myMonster.getName() + " は特殊技を持っていなかった！");
     	this.attack(enemyMonster, myMonster);
     }
 

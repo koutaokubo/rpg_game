@@ -29,8 +29,8 @@ public class Lapras extends Monster2{
     public void specialAttack(Monster2 enemyMonster, Monster2 myMonster) {
     	if(pp <= max_pp) {
     		myMonster.setHp(myMonster.getMaxHp());
-			System.out.println("ラプラスの ねむる！");
-			System.out.println("ラプラスのHPが回復した！");
+			System.out.println(myMonster.getName() + "の ねむる！");
+			System.out.println(myMonster.getName() + " のHPが回復した！");
     	}else {
     		System.out.println("ねむるのPPが足りない！");
     	}

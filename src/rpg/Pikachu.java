@@ -37,7 +37,7 @@ public class Pikachu extends Monster2{
             if(enemyHp < 0){
               enemyHp = 0;
             }
-            System.out.println("ピカチュウの 10まんボルト！");
+            System.out.println(myMonster.getName() + " の 10まんボルト！");
             System.out.println(enemyMonster.name + "へ" + damage + "のダメージ！残り体力は" + enemyHp);
     	}else {
     		System.out.println("10まんボルトのPPが足りない！");

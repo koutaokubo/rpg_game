@@ -41,7 +41,7 @@ public class Lucario extends Monster2{
             // 大ダメージの代わりに自分の防御が下がる
             myMonster.setDefenseRise(myMonster.getDefenseRise() - 3);
 
-            System.out.println("ルカリオの インファイト！");
+            System.out.println(myMonster.getName() + " の インファイト！");
             System.out.println(enemyMonster.name + "へ" + damage + "のダメージ！残り体力は" + enemyHp);
     	}else {
     		System.out.println("インファイトのPPが足りない！");
