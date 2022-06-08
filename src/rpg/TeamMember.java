@@ -2,14 +2,17 @@ package rpg;
 import java.util.ArrayList;
 
 import item.ItemBox;
+import item.ShopList;
 public class TeamMember {
   public static ArrayList<Monster2> myMonsters;
   public static ItemBox itemBox;
+  public static ShopList shopList;
   public static int money;
 
   public TeamMember(int number){
     myMonsters = createMyMonsters(number);
     itemBox = new ItemBox();
+    shopList = new ShopList();
   }
 
     public ArrayList<Monster2> monsters = new ArrayList<Monster2>(){

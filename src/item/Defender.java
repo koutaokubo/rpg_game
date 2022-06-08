@@ -2,7 +2,7 @@ package item;
 
 import java.util.ArrayList;
 
-import rpg.MyMonster;
+import rpg.Monster2;
 import rpg.TeamMember;
 
 public class Defender extends Item{
@@ -12,8 +12,8 @@ public class Defender extends Item{
 
   public void useItem(){
     int selectCharacter;
-    MyMonster target;
-    ArrayList<MyMonster> myMonsters = TeamMember.myMonsters;
+    Monster2 target;
+    ArrayList<Monster2> myMonsters = TeamMember.myMonsters;
 
     while(true){
       System.out.println(this.itemName + "　をだれに使いますか？");
