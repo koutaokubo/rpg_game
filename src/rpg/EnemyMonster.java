@@ -4,7 +4,7 @@ public class EnemyMonster extends Monster{
   public void attack(Monster myMonster, Monster enemyMonster){
     int myHp = myMonster.getHp();
     // myHp -= this.attack_power;
-    int damage = (enemyMonster.attack_power / 2) - (myMonster.defense_power / 4); 
+    int damage = (enemyMonster.attack_power / 2) - (myMonster.defense_power / 4);
     myHp -= damage;
     myMonster.setHp(myHp);
     if (myHp < 0 ){

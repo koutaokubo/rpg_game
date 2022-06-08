@@ -1,5 +1,6 @@
 package rpg;
 
+
 public class MyMonster extends Monster{
   protected int exp;
 
@@ -26,7 +27,7 @@ public class MyMonster extends Monster{
     setDefensePower(getDefensePower()+1);
     setAgility(getAgility()+1);
   }
-  
+
   @Override
   public void attack(Monster enemyMonster, Monster myMonster) {
     int enemyHp = enemyMonster.getHp();

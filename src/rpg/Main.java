@@ -193,9 +193,9 @@ public class Main {
           System.out.println("数値を入力してください");
           scan.next();
         }
-        scan.close();
+      }
     }
-  }
+  
 
   public static int selectCommand(){
     Scanner scanner = new Scanner(System.in);
@@ -213,7 +213,7 @@ public class Main {
           System.out.println("数値を入力してください");
           scanner.next();
         }
-    }
+      }
   }
 
   public static int changeMonsterNumber(ArrayList<MyMonster> myMonsters){
@@ -239,6 +239,7 @@ public class Main {
   public static void recovery(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters) {
     // enemyMonster.hp = enemyMonster.max_hp;
     TeamMember teamMember = new TeamMember(6);
+
     myMonsters.clear();
     myMonsters.addAll(teamMember.myMonsters);
     isContinue(myMonsters);
@@ -293,8 +294,11 @@ public class Main {
 
   public static void clearBoss(){
     System.out.println("ボスモンスターに勝利した！！");
-    System.out.println("こうして世界は平和になった");
+    System.out.println("こうして世界は平和になった！！");
     System.out.println("Thank you for playing!!");
-    System.out.println("special thanks to Neiro♪");
+    System.out.println("");
+    System.out.println("");
+    System.out.println("");
+    System.out.println("Special Thanks to Neiro♪");
   }
 }
