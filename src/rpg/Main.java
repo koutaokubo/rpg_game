@@ -162,10 +162,6 @@ public class Main {
     Scanner scan = new Scanner(System.in);
     while(true) {
       if(Field.battleCount >= 3){
-<<<<<<< HEAD
-
-=======
->>>>>>> 90141d3dac65340d90a0b986a452629257445ffe
         System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３  買い物：4　ボスと戦う：5");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt();
@@ -179,12 +175,7 @@ public class Main {
           System.out.println("数値を入力してください");
           scan.next();
         }
-<<<<<<< HEAD
-        scan.close();
-      }
-=======
       }else{
->>>>>>> 90141d3dac65340d90a0b986a452629257445ffe
         System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３ 買い物：４");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt();
@@ -219,12 +210,7 @@ public class Main {
           System.out.println("数値を入力してください");
           scanner.next();
         }
-<<<<<<< HEAD
-
-    }
-=======
       }
->>>>>>> 90141d3dac65340d90a0b986a452629257445ffe
   }
 
   public static int changeMonsterNumber(ArrayList<Monster2> myMonsters){
