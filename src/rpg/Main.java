@@ -55,7 +55,7 @@ public class Main {
           enemyMonsters.clear();
           return;
         case 3:
-          selectNumber = changeMonsterNumber();
+          selectNumber = changeMonsterNumber(myMonsters);
           changeMonster(myMonsters, 0, selectNumber);
           break;
       }
@@ -104,7 +104,7 @@ public class Main {
     Scanner scan = new Scanner(System.in);
     while(true) {
       if(Field.battleCount >= 3){
-        System.out.println("戦闘を続けますか？　たたかう：１　逃げる：２　交代する：３  ボスと戦う：４");
+        System.out.println("戦闘を続けますか？　たたかう：１　回復して続ける：２　終了する：３  ボスと戦う：４");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt();
           if(selectCommand < 1 || selectCommand > 4){
@@ -157,14 +157,15 @@ public class Main {
     }
   }
 
-  public static int changeMonsterNumber(){
+  public static int changeMonsterNumber(ArrayList<MyMonster> myMonsters){
     Scanner scanner = new Scanner(System.in);
     while(true) {
-      System.out.println("交代するモンスターの番号を入力してください");
+      System.out.println("交代するモンスターの番号を入力してください(1~" + myMonsters.size() + ")");
+      System.out.println(myMonsters);
       if(scanner.hasNextInt()){
         int selectCommand = scanner.nextInt();
-        if(selectCommand < 0 || selectCommand > 5){
-          System.out.println("数値は0,1,2,3,4,5,のどれかを入力してください");
+        if(selectCommand < 1 || selectCommand > myMonsters.size()){
+          System.out.println("数値は1~" + myMonsters.size() + "のどれかを入力してください");
           continue;
         } else {
           return selectCommand;
@@ -180,8 +181,12 @@ public class Main {
 
   public static void recovery(ArrayList<MyMonster> myMonsters, ArrayList<EnemyMonster> enemyMonsters) {
     // enemyMonster.hp = enemyMonster.max_hp;
-    myMonsters.forEach(myMonster -> myMonster.hp = myMonster.max_hp);
-    enemyMonsters.forEach(enemyMonster -> enemyMonster.hp = enemyMonster.max_hp);
+    TeamMember teamMember = new TeamMember(6);
+
+    myMonsters.clear();
+    myMonsters.addAll(teamMember.myMonsters);
+    // myMonsters.forEach(myMonster -> myMonster.hp = myMonster.max_hp);
+    // myMonsters.forEach(myMonster -> myMonster.battle = true);
     isContinue(myMonsters);
   }
 
@@ -224,7 +229,7 @@ public class Main {
   }
 
   public static void changeMonster(ArrayList<MyMonster> myMonsters, int currentNumber, int selectNumber){
-    Collections.swap(myMonsters, currentNumber, selectNumber);
+    Collections.swap(myMonsters, currentNumber, selectNumber-1);
   }
 
   public static void bossBattle(ArrayList<EnemyMonster> bossMonsters, ArrayList<MyMonster> myMonsters){
