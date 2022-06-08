@@ -184,8 +184,8 @@ public class Main {
         System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３ 買い物：４");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt();
-          if(selectCommand < 1 || selectCommand > 4){
-            System.out.println("数値は1,2,3のどれかを入力してください");
+          if(selectCommand < 0 || selectCommand > 5){
+            System.out.println("数値は0,1,2,3,4のどれかを入力してください");
             continue;
           } else {
             return selectCommand;
@@ -251,35 +251,47 @@ public class Main {
   }
 
   public static void firstAttack(Monster2 myMonster, Monster2 enemyMonster){
-    if(myMonster.agility > enemyMonster.agility && myMonster.getBattle() && enemyMonster.getBattle()){
-      myMonster.attack(enemyMonster, myMonster);
-      if(enemyMonster.getBattle()){
-        enemyMonster.attack(myMonster, enemyMonster);
-      }
-    }else if(myMonster.agility < enemyMonster.agility && enemyMonster.getBattle() && myMonster.getBattle()){
-      enemyMonster.attack(myMonster, enemyMonster);
-      if(myMonster.getBattle()){
-        myMonster.attack(enemyMonster, myMonster);
-      }
-    }else{
-      Random rand = new Random();
-      int num = rand.nextInt(2);
-      if (num == 0){
-        if(myMonster.getBattle() && enemyMonster.getBattle()){
-          myMonster.attack(enemyMonster, myMonster);
-          if(enemyMonster.getBattle()){
-            enemyMonster.attack(myMonster, enemyMonster);
-          }
-        }
-      }else{
-        if(enemyMonster.getBattle() && myMonster.getBattle()){
-          enemyMonster.attack(myMonster, enemyMonster);
-          if(myMonster.getBattle()){
-            myMonster.attack(enemyMonster, myMonster);
-          }
-        }
-      }
-    }
+
+	  // 素早さ判定のためのインデックスを作成
+	  Monster2[] monsterOnBattle = {myMonster, enemyMonster};
+	  int[] battleOrder = new int[2];
+	  if(monsterOnBattle[0].getAgility() + monsterOnBattle[0].getAgilityRise()
+			  > monsterOnBattle[1].getAgility() + monsterOnBattle[1].getAgilityRise()) {
+		  battleOrder[0] = 0;
+		  battleOrder[1] = 1;
+	  }else if(monsterOnBattle[0].getAgility() + monsterOnBattle[0].getAgilityRise()
+			      < monsterOnBattle[1].getAgility() + monsterOnBattle[1].getAgilityRise()) {
+		  battleOrder[0] = 1;
+		  battleOrder[1] = 0;
+	  }else {
+		  int rand = new Random().nextInt(2);
+	      battleOrder[0] = rand;
+	      battleOrder[1] = 1 - rand;
+	  }
+
+	  // 攻撃
+	  while(true) {
+		  Scanner scanner = new Scanner(System.in);
+		  System.out.println("どうやって攻撃する？ 通常攻撃：１ 特殊技：２");
+	      if(scanner.hasNextInt()){
+	        int selectCommand = scanner.nextInt();
+	        if(selectCommand < 1 || selectCommand > 2){
+	          System.out.println("数値は1,2のどれかを入力してください");
+	          continue;
+	        } else {
+	        	monsterOnBattle[battleOrder[0]].attack(monsterOnBattle[battleOrder[1]], monsterOnBattle[battleOrder[0]]);
+	      	    if(monsterOnBattle[battleOrder[1]].getBattle()) {
+	      		  monsterOnBattle[battleOrder[1]].attack(monsterOnBattle[battleOrder[0]], monsterOnBattle[battleOrder[1]]);
+	      	    }
+	        }
+	      } else {
+	        System.out.println("数値を入力してください");
+	        scanner.next();
+	      }
+	  }
+
+
+
 
   }
 
