@@ -137,7 +137,6 @@ public class Main {
           System.out.println("数値を入力してください");
           scanner.next();
         }
-        scanner.close();
     }
   }
 
@@ -156,7 +155,6 @@ public class Main {
           System.out.println("数値を入力してください");
           scanner.next();
         }
-        scanner.close();
     }
   }
 
@@ -178,8 +176,7 @@ public class Main {
           System.out.println("数値を入力してください");
           scan.next();
         }
-        scan.close();
-      }
+      }else{
         System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３ 買い物：４");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt();
@@ -195,6 +192,7 @@ public class Main {
         }
       }
     }
+  }
   
 
   public static int selectCommand(){
