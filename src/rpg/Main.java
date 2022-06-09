@@ -1,5 +1,7 @@
 package rpg;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -184,8 +186,8 @@ public class Main {
         System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３ 買い物：４");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt();
-          if(selectCommand < 1 || selectCommand > 4){
-            System.out.println("数値は1,2,3のどれかを入力してください");
+          if(selectCommand < 0 || selectCommand > 5){
+            System.out.println("数値は0,1,2,3,4のどれかを入力してください");
             continue;
           } else {
             return selectCommand;
@@ -251,35 +253,87 @@ public class Main {
   }
 
   public static void firstAttack(Monster2 myMonster, Monster2 enemyMonster){
-    if(myMonster.agility > enemyMonster.agility && myMonster.getBattle() && enemyMonster.getBattle()){
-      myMonster.attack(enemyMonster, myMonster);
-      if(enemyMonster.getBattle()){
-        enemyMonster.attack(myMonster, enemyMonster);
-      }
-    }else if(myMonster.agility < enemyMonster.agility && enemyMonster.getBattle() && myMonster.getBattle()){
-      enemyMonster.attack(myMonster, enemyMonster);
-      if(myMonster.getBattle()){
-        myMonster.attack(enemyMonster, myMonster);
-      }
-    }else{
-      Random rand = new Random();
-      int num = rand.nextInt(2);
-      if (num == 0){
-        if(myMonster.getBattle() && enemyMonster.getBattle()){
-          myMonster.attack(enemyMonster, myMonster);
-          if(enemyMonster.getBattle()){
-            enemyMonster.attack(myMonster, enemyMonster);
-          }
-        }
-      }else{
-        if(enemyMonster.getBattle() && myMonster.getBattle()){
-          enemyMonster.attack(myMonster, enemyMonster);
-          if(myMonster.getBattle()){
-            myMonster.attack(enemyMonster, myMonster);
-          }
-        }
-      }
-    }
+	  // 味方・敵がそれぞれ特殊技を使うかどうか
+	  boolean useSpecial_my = false;
+	  boolean useSpecial_enemy = false;
+
+	  // コマンド入力で味方の攻撃の仕方を指定
+	  Scanner scanner = new Scanner(System.in);
+	    while(true) {
+	        System.out.println("どうやって攻撃する？ 通常攻撃：１ 特殊技：２");
+	        if(scanner.hasNextInt()){
+	          int selectCommand = scanner.nextInt();
+	          if(selectCommand < 1 || selectCommand > 2){
+	            System.out.println("数値は1,2のどれかを入力してください");
+	            continue;
+	          } else if(selectCommand == 2){
+	            useSpecial_my = true;
+	            break;
+	          }else {
+	        	  break;
+	          }
+	        }else {
+	          System.out.println("数値を入力してください");
+	          scanner.next();
+	        }
+	    }
+	    // 確率で敵も特殊技を使う
+	    double randSpecial = new Random().nextDouble();
+	    useSpecial_enemy = (randSpecial < 0.3);
+
+	    // attackとspecialAttackどちらを呼び出すか
+	    try{
+	        Method myAttackMethod;
+	        Method enemyAttackMethod;
+	    	myAttackMethod = useSpecial_my
+	    		? myMonster.getClass().getMethod("specialAttack", Monster2.class, Monster2.class)
+	    		: myMonster.getClass().getMethod("attack", Monster2.class, Monster2.class);
+	    	enemyAttackMethod = useSpecial_enemy
+		    		? enemyMonster.getClass().getMethod("specialAttack", Monster2.class, Monster2.class)
+		    		: enemyMonster.getClass().getMethod("attack", Monster2.class, Monster2.class);
+
+	        // 攻撃処理
+	        if(myMonster.agility > enemyMonster.agility && myMonster.getBattle() && enemyMonster.getBattle()){
+	          myAttackMethod.invoke(myMonster, enemyMonster, myMonster);
+				if (enemyMonster.getBattle()) {
+					enemyAttackMethod.invoke(enemyMonster, myMonster, enemyMonster);
+				}
+			} else if (myMonster.agility < enemyMonster.agility && enemyMonster.getBattle() && myMonster.getBattle()) {
+				enemyAttackMethod.invoke(enemyMonster, myMonster, enemyMonster);
+				if (myMonster.getBattle()) {
+					myAttackMethod.invoke(myMonster, enemyMonster, myMonster);
+				}
+			} else {
+				Random rand = new Random();
+				int num = rand.nextInt(2);
+				if (num == 0) {
+					if (myMonster.getBattle() && enemyMonster.getBattle()) {
+						myAttackMethod.invoke(myMonster, enemyMonster, myMonster);
+						if (enemyMonster.getBattle()) {
+							enemyAttackMethod.invoke(enemyMonster, myMonster, enemyMonster);
+						}
+					}
+				} else {
+					if (enemyMonster.getBattle() && myMonster.getBattle()) {
+						enemyAttackMethod.invoke(enemyMonster, myMonster, enemyMonster);
+						if (myMonster.getBattle()) {
+							myAttackMethod.invoke(myMonster, enemyMonster, myMonster);
+						}
+					}
+				}
+			}
+	    } catch(NoSuchMethodException e) {
+	    	e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+
+
+
 
   }
 

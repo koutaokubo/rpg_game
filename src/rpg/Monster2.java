@@ -162,7 +162,7 @@ public abstract class Monster2 {
 //  public void clearChangesInBattle() {
 //  	for(int i = 0; i < myMonsters.size(); i++) {
 //  		myMonsters.get(i).clearStatusRise();
-//  		myMonsters.setPP(myMonster.getMaxPP());
+//  		myMonsters.get(i)setPP(myMonster.getMaxPP());
 //  	}
 //  }
 

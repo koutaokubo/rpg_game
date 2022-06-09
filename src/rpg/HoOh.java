@@ -18,6 +18,7 @@ public class HoOh extends Monster2{
         int enemyHp = enemyMonster.getHp();
         int damage = ((myMonster.attack_power + myMonster.attack_rise) / 2)
         		- ((enemyMonster.defense_power + enemyMonster.defense_rise) / 4);
+        damage = Math.max(damage, 1);
         enemyHp -= damage;
         enemyMonster.setHp(enemyHp);
         if(enemyHp < 0){
@@ -31,6 +32,7 @@ public class HoOh extends Monster2{
 			int enemyHp = enemyMonster.getHp();
 			int damage = (int) (1.5 * ((myMonster.attack_power + myMonster.attack_rise) / 2
 					- ((enemyMonster.defense_power + enemyMonster.defense_rise) / 4)));
+	        damage = Math.max(damage, 1);
 			enemyHp -= damage;
 			enemyMonster.setHp(enemyHp);
 			if (enemyHp < 0) {
