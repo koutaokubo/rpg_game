@@ -15,9 +15,10 @@ import item.ItemBox;
 import item.ShopList;
 
 public class Main {
-  public static void main(String[] args) {
-    Field field = new Field(4);
-    TeamMember teamMember = new TeamMember(6);
+    public static Field field = new Field(4);
+    public static TeamMember teamMember = new TeamMember(6);
+
+    public static void main(String[] args) {
 
     //todo teamMemberがstaticになっているので変更するかどうか検討
     Item item = new Attacker(1);
@@ -73,6 +74,7 @@ public class Main {
     } while(!myMonsters.isEmpty() && !enemyMonsters.isEmpty());
 
     System.out.println("戦闘終了");
+    teamMember.clearChangesInBattle();
     if(isBoss){
       clearBoss();
     }else{
