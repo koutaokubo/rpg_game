@@ -17,10 +17,10 @@ public class Field {
   public ArrayList<Monster2> monsters = new ArrayList<>(){
     {
       add(new Pippi("ピッピ1", 70, 10, 10, 3, 1));
-      add(new Pippi("ピッピ2", 70, 10, 10, 3, 1));
-      add(new Pippi("ピッピ3", 70, 10, 10, 3, 1));
       add(new Crobat("クロバット1", 90, 20, 10, 20, 1));
+      add(new Pippi("ピッピ2", 70, 10, 10, 3, 1));
       add(new Crobat("クロバット2", 90, 20, 10, 20, 1));
+      add(new Pippi("ピッピ3", 70, 10, 10, 3, 1));
       add(new Crobat("クロバット3", 90, 20, 10, 20, 1));
       add(new HoOh("ホウオウ", 180, 100, 25, 0, 15));
     }

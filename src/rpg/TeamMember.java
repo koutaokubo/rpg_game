@@ -33,4 +33,10 @@ public class TeamMember {
         }
         return myMonsters;
     }
+    public void clearChangesInBattle() {
+      	for(int i = 0; i < myMonsters.size(); i++) {
+      		myMonsters.get(i).clearStatusRise();
+      		myMonsters.get(i).setPP(myMonsters.get(i).getMaxPP());
+      	}
+      }
 }
