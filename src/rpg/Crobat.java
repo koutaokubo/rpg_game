@@ -30,7 +30,7 @@ public class Crobat extends Monster2{
     }
 
     public void specialAttack(Monster2 enemyMonster, Monster2 myMonster) {
-    	if(pp <= max_pp) {
+    	if(pp < max_pp) {
     		pp++;
             int enemyHp = enemyMonster.getHp();
             double rand = new Random().nextDouble();

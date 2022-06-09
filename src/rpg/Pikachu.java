@@ -28,7 +28,7 @@ public class Pikachu extends Monster2{
     }
 
     public void specialAttack(Monster2 enemyMonster, Monster2 myMonster) {
-    	if(pp <= max_pp) {
+    	if(pp < max_pp) {
     		pp++;
             int enemyHp = enemyMonster.getHp();
             int damage = (int)(1.5 * ((myMonster.attack_power + myMonster.attack_rise) / 2
