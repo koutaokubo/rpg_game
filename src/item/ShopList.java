@@ -1,7 +1,7 @@
 package item;
 import java.util.*;
 
-import rpg.TeamMember;
+import party.Party;
 
 public class ShopList {
   public ArrayList<Item> shopList;
@@ -28,7 +28,7 @@ public class ShopList {
 			return ;
 		}
 		this.shopList.get(index).buyItems();
-    TeamMember.money -= 100;
+    Party.money -= 100;
 	}
 
   public int size(){

@@ -3,126 +3,241 @@ package rpg;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
-import field.BossField;
 import field.Field;
 import item.Attacker;
 import item.Item;
 import item.ItemBox;
 import item.ShopList;
+import monster.Monster;
+import party.Party;
 
 public class Main {
-    public static Field field = new Field(4);
-    public static TeamMember teamMember = new TeamMember(6);
+  public static int defaultExp = 20;
+  public static int battleCount = 0;
 
-    public static void main(String[] args) {
+  public static Field field = new Field(4, false);
+  public static Party party = new Party(6);
 
-    //todo teamMemberがstaticになっているので変更するかどうか検討
+  public static void main(String[] args) {
     Item item = new Attacker(1);
-    TeamMember.itemBox.add(item);
-    letsBattle(teamMember.myMonsters, field.enemyMonsters, false);
+    Party.itemBox.add(item);
+
+    battle(false);
   }
 
-  public static void letsBattle(ArrayList<Monster2> myMonsters, ArrayList<Monster2> enemyMonsters, boolean isBoss){
-    int selectNumber;
-    int command;
-    ArrayList<Integer> initialLevel = new ArrayList<Integer>();
-    myMonsters.forEach(myMonster -> initialLevel.add(myMonster.getLevel()));
+  // 生き残っている中で一番前にいるモンスターを探してバトルに出す
+  public static int sentMonsterNum(ArrayList<Monster> monsters, int monsterNum) {
+	  int partySize = monsters.size();
+	  while(true) {
+		  if(!monsters.get(monsterNum).isKnockedOut()) {
+			  return monsterNum;
+		  }
+		  monsterNum = (monsterNum + 1) % partySize;
+	  }
+  }
 
-    // firstAttack(myMonsters.get(0), enemyMonsters.get(0));
+  public static void battle(boolean isBoss){
+	System.out.println("モンスターが現れた！");
+
+    ArrayList<Monster> myMonsters = party.myMonsters;
+    ArrayList<Monster> enemyMonsters = field.enemyMonsters;
+
+    // 出てきた敵のリストを表示
+    for(int i = 0; i < enemyMonsters.size(); i++) {
+    	System.out.println((i+1) + ": " + enemyMonsters.get(i).getName() + ", HP" + enemyMonsters.get(i).getMaxHp());
+    }
+
+    //何番目のモンスターがバトルに出ているか
+    int myNumOnBattle = 0;
+    int enemyNumOnBattle = 0;
 
     do{
-      Monster2 myMonster = myMonsters.get(0);
-      Monster2 enemyMonster = enemyMonsters.get(0);
-
-      //todo 現在戦闘中のモンスターの名前とHPを表示させる
-      int currentLevel = myMonster.getLevel();
-      firstAttack(myMonster, enemyMonster);
-
-      if(!myMonsters.get(0).getBattle()){
-        myMonsters.remove(0);
-        initialLevel.remove(0);
-      }
-      if(!enemyMonsters.get(0).getBattle()){
-        enemyMonsters.remove(0);
-        System.out.println(enemyMonster.getName() + "を倒した！");
-        myMonster.gainExp(20);
-        System.out.println(myMonster.getName() + "は" + 20 + "の経験値を得た！");
-        if(currentLevel > initialLevel.get(0)){
-          System.out.println(myMonster.getName()+"はレベルアップした！ -> " + myMonster.getLevel() );
-        }
-      }
-      if(myMonsters.isEmpty() || enemyMonsters.isEmpty()){
-        break;
-      }
-      command =  selectCommand();
+      // コマンド選択：たたかう、にげる、交代
+      int command =  selectCommand();
       switch(command) {
         case 1:
-          // firstAttack(myMonster, enemyMonster);
           break;
         case 2:
-          enemyMonsters.clear();
-          return;
+          if(!isBoss) {
+        	  enemyMonsters.clear();
+        	  System.out.println("戦闘から逃げた！");
+        	  return;
+          }else {
+        	  System.out.println("ボスの威圧感が強すぎて逃げられない！");
+        	  break;
+          }
         case 3:
-          selectNumber = changeMonsterNumber(myMonsters);
-          changeMonster(myMonsters, 0, selectNumber);
+          myNumOnBattle = changeMonsterNumber(myMonsters);
           break;
       }
-    } while(!myMonsters.isEmpty() && !enemyMonsters.isEmpty());
+
+      // パーティの誰が場に出るか
+      myNumOnBattle = sentMonsterNum(myMonsters, myNumOnBattle);
+      Monster myMonster = myMonsters.get(myNumOnBattle);
+      enemyNumOnBattle = sentMonsterNum(enemyMonsters, enemyNumOnBattle);
+      Monster enemyMonster = enemyMonsters.get(enemyNumOnBattle);
+
+      String textAsleep = myMonster.getAsleep() > 0 ? "【眠り】" : "";
+      System.out.println("【じぶん】" + (myNumOnBattle+1) + ": " + myMonster.getName() + textAsleep);
+      System.out.println("    レベル: " + myMonster.getLevel() + ", HP: " + myMonster.getHp() + "/" + myMonster.getMaxHp());
+      System.out.println("【あいて】" + (enemyNumOnBattle+1) + ": " + enemyMonster.getName());
+      System.out.println("    レベル: " + enemyMonster.getLevel() + ", HP: " + enemyMonster.getHp() + "/" + enemyMonster.getMaxHp());
+
+      // １ターンの処理
+      turn(myMonster, enemyMonster);
+
+    } while(!party.allKnockedOut() && !field.allKnockedOut());
 
     System.out.println("戦闘終了");
-    teamMember.clearChangesInBattle();
+    party.clearChangesInBattle();
     if(isBoss){
       clearBoss();
     }else{
-      isWin(myMonsters, enemyMonsters);
+      isWin();
     }
   }
 
+  public static void turn(Monster myMonster, Monster enemyMonster){
+	  // 味方・敵がそれぞれ特殊技を使うかどうか
+	  boolean useSpecial_my = false;
+	  boolean useSpecial_enemy = false;
 
-  public static void isWin(ArrayList<Monster2> myMonsters, ArrayList<Monster2> enemyMonsters){
-    // if(!myMonsters.get(myMonsters.size() -1).getBattle() && enemyMonsters.get(enemyMonsters.size() - 1).getBattle()){
-    //   System.out.println("敗北しました");
-    //   return;
-    // }
-    if(myMonsters.isEmpty() && !enemyMonsters.isEmpty()){
-      Field.setBattleCount(0);
-      System.out.println("敗北しました");
+	  // コマンド入力で味方の攻撃の仕方を指定
+	  Scanner scanner = new Scanner(System.in);
+	    while(true) {
+	        System.out.println("どうやって攻撃する？ 通常攻撃：１ 特殊技：２");
+	        if(scanner.hasNextInt()){
+	          int selectCommand = scanner.nextInt();
+	          if(selectCommand < 1 || selectCommand > 2){
+	            System.out.println("数値は1,2のどれかを入力してください");
+	          } else if(selectCommand == 2){
+	            useSpecial_my = true;
+	            break;
+	          }else {
+	        	  break;
+	          }
+	        }else {
+	          System.out.println("数値を入力してください");
+	        }
+	    }
+	    // 確率で敵も特殊技を使う
+	    if(enemyMonster.getPp() > 0) {
+	    	double randSpecial = new Random().nextDouble();
+	        useSpecial_enemy = (randSpecial < 0.3);
+	    }
+
+	    try{
+	    	// attackとspecialAttackどちらを呼び出すか
+	        Method myAttackMethod;
+	        Method enemyAttackMethod;
+	    	myAttackMethod = useSpecial_my
+	    		? myMonster.getClass().getMethod("specialAttack", Monster.class)
+	    		: myMonster.getClass().getMethod("attack", Monster.class);
+	    	enemyAttackMethod = useSpecial_enemy
+		    	? enemyMonster.getClass().getMethod("specialAttack", Monster.class)
+		    	: enemyMonster.getClass().getMethod("attack", Monster.class);
+
+	        // 攻撃処理
+	        if(myMonster.getAgility() * myMonster.getAgilityRise()
+	        		> enemyMonster.getAgility()* enemyMonster.getAgilityRise()){
+	        	attackSet(myMonster, myAttackMethod, enemyMonster, enemyAttackMethod);
+			} else if (myMonster.getAgility() * myMonster.getAgilityRise()
+					< enemyMonster.getAgility() * enemyMonster.getAgilityRise()) {
+				attackSet(enemyMonster, enemyAttackMethod, myMonster, myAttackMethod);
+			} else { // 同速
+				Random rand = new Random();
+				int num = rand.nextInt(2);
+				if (num == 0) {
+					attackSet(myMonster, myAttackMethod, enemyMonster, enemyAttackMethod);
+				} else {
+					attackSet(enemyMonster, enemyAttackMethod, myMonster, myAttackMethod);
+				}
+			}
+	    } catch(NoSuchMethodException e) {
+	    	e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+
+	    // 倒されたとき
+	    if(myMonster.isKnockedOut()){
+	        System.out.println(myMonster.getName() + "は倒されてしまった・・・");
+	        myMonster.setAsleep(0);
+	      }
+	    if(enemyMonster.isKnockedOut()){
+	        System.out.println(enemyMonster.getName() + "を倒した！");
+	        // myMonster.gainExp(defaultExp);
+	        int exp = enemyMonster.getMaxHp();
+	        if(!myMonster.isKnockedOut()) {
+	        	myMonster.gainExp(exp);
+	        }
+	    }
+
+  }
+
+  // １対の攻撃
+  public static void attackSet(Monster firstMonster, Method firstAttack, Monster secondMonster, Method secondAttack) {
+	  try{
+		  firstAttack.invoke(firstMonster, secondMonster);
+		  if(!secondMonster.isKnockedOut()) {
+			  secondAttack.invoke(secondMonster, firstMonster);
+		  }
+	  } catch (IllegalAccessException e) {
+		  e.printStackTrace();
+	  } catch (IllegalArgumentException e) {
+		  e.printStackTrace();
+	  } catch (InvocationTargetException e) {
+		  e.printStackTrace();
+	  }
+  }
+
+
+  public static void isWin(){
+
+    if(party.allKnockedOut()){
+      System.out.println("敗北してしまった・・・");
     }
 
-    if(!myMonsters.isEmpty() && enemyMonsters.isEmpty()){
-      TeamMember.money += 100;
+    if(field.allKnockedOut()){
+      System.out.println("敵に勝利！");
+      Party.money += 100;
+      System.out.println("賞金 100円 を手に入れた！");
       int selectCommand = inputCommand();
-      //todo 買い物コマンド追加する・アイテム使用機能追加する
-      if(selectCommand == 0) return;
-      if(selectCommand == 1){
-        Field.plusBattleCount();
-        isContinue(myMonsters);
-      }else if(selectCommand == 2){
-        recovery(myMonsters, enemyMonsters);
-      }else if(selectCommand == 3){
-        if(TeamMember.itemBox.size() == 0){
+      if(selectCommand == 0) { // 終了
+    	  System.out.println("ゲームを終了します");
+    	  return;
+      }
+      if(selectCommand == 1){ // 続ける
+        battleCount++;
+        isContinue();
+      }else if(selectCommand == 2){ // 回復して続ける
+        battleCount++;
+        party.heal();
+        isContinue();
+      }else if(selectCommand == 3){ // アイテムを使う
+        if(Party.itemBox.size() == 0){
           System.out.println("アイテムがありません");
           return;
         }
         System.out.println("使用するアイテムを選択してください");
-        TeamMember.itemBox.showList();
-        int index = selectItemIndex(TeamMember.itemBox);
-        TeamMember.itemBox.useItem(index);
-        isContinue(myMonsters);
-      }else if(selectCommand == 4) {
+        Party.itemBox.showList();
+        int index = selectItemIndex(Party.itemBox);
+        Party.itemBox.useItem(index);
+        isContinue();
+      }else if(selectCommand == 4) { // ショップで購入
         System.out.println("購入するアイテムを選択してください");
-        TeamMember.shopList.showList();
-        int index = buyItemIndex(TeamMember.shopList);
-        TeamMember.shopList.buyItems(index);
-        isContinue(myMonsters);
-      }else if(selectCommand == 5){
-        BossField bossField = new BossField();
-        // firstAttack(myMonsters.get(0),bossField.enemyMonsters.get(0));
-        letsBattle(myMonsters, bossField.enemyMonsters, true);
+        Party.shopList.showList();
+        int index = buyItemIndex(Party.shopList);
+        Party.shopList.buyItems(index);
+        isContinue();
+      }else if(selectCommand == 5){ // ボス戦
+        party.heal();
+    	System.out.println("ボスモンスターが出現した！");
+        field = new Field(1, true);
+        battle(true);
       }
     }
   }
@@ -134,7 +249,6 @@ public class Main {
           int selectCommand = scanner.nextInt();
           if(selectCommand < 1 || selectCommand > itemBox.size()){
             System.out.println("数値は1 ~ " + itemBox.size() + "のどれかを入力してください");
-            continue;
           } else {
             return selectCommand - 1;
           }
@@ -142,7 +256,6 @@ public class Main {
           System.out.println("数値を入力してください");
           scanner.next();
         }
-        scanner.close();
     }
   }
 
@@ -153,7 +266,6 @@ public class Main {
           int selectCommand = scanner.nextInt();
           if(selectCommand < 1 || selectCommand > shopList.size()){
             System.out.println("数値は1 ~ " + shopList.size() + "のどれかを入力してください");
-            continue;
           } else {
             return selectCommand - 1;
           }
@@ -161,15 +273,13 @@ public class Main {
           System.out.println("数値を入力してください");
           scanner.next();
         }
-        scanner.close();
     }
   }
 
   public static int inputCommand(){
-    System.out.println("勝利しました");
     Scanner scan = new Scanner(System.in);
     while(true) {
-      if(Field.battleCount >= 3){
+      if(battleCount >= 3){
         System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３  買い物：4　ボスと戦う：5");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt();
@@ -183,7 +293,6 @@ public class Main {
           System.out.println("数値を入力してください");
           scan.next();
         }
-        scan.close();
       }
         System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３ 買い物：４");
         if(scan.hasNextInt()){
@@ -198,19 +307,17 @@ public class Main {
           System.out.println("数値を入力してください");
           scan.next();
         }
-        scan.close();
     }
   }
 
   public static int selectCommand(){
     Scanner scanner = new Scanner(System.in);
     while(true) {
-        System.out.println("戦闘を続けますか？　たたかう：１　逃げる：２　交代する：３");
+        System.out.println("何をする？　たたかう：１　逃げる：２　交代する：３");
         if(scanner.hasNextInt()){
           int selectCommand = scanner.nextInt();
           if(selectCommand < 1 || selectCommand > 3){
             System.out.println("数値は1,2,3のどれかを入力してください");
-            continue;
           } else {
             return selectCommand;
           }
@@ -221,17 +328,23 @@ public class Main {
     }
   }
 
-  public static int changeMonsterNumber(ArrayList<Monster2> myMonsters){
+  public static int changeMonsterNumber(ArrayList<Monster> myMonsters){
     Scanner scanner = new Scanner(System.in);
     while(true) {
-      System.out.println("交代するモンスターの番号を入力してください(1 ~ " + myMonsters.size() + ")");
+      System.out.println("交代するモンスターの番号を入力してください");
+      for(int i = 0; i < myMonsters.size(); i++) {
+    	  String alive = myMonsters.get(i).isKnockedOut() ? "【戦闘不能】" : "";
+    	  System.out.println((i+1) + ": " + alive + myMonsters.get(i).getName());
+      }
       if(scanner.hasNextInt()){
         int selectCommand = scanner.nextInt();
         if(selectCommand < 1 || selectCommand > myMonsters.size()){
           System.out.println("数値は1 ~ " + myMonsters.size() + "のどれかを入力してください");
           continue;
+        } else if(myMonsters.get(selectCommand-1).isKnockedOut()){
+        	System.out.println(myMonsters.get(selectCommand-1).getName() + "はすでに戦闘不能です");
         } else {
-          return selectCommand;
+          return selectCommand - 1;
         }
       } else {
         System.out.println("数値を入力してください");
@@ -240,112 +353,9 @@ public class Main {
     }
   }
 
-
-  public static void recovery(ArrayList<Monster2> myMonsters, ArrayList<Monster2> enemyMonsters) {
-    // enemyMonster.hp = enemyMonster.max_hp;
-    TeamMember teamMember = new TeamMember(6);
-    myMonsters.clear();
-    myMonsters.addAll(teamMember.myMonsters);
-    isContinue(myMonsters);
-  }
-
-  public static void isContinue(ArrayList<Monster2> myMonsters){
-    ArrayList<Monster2> nextEnemyMonsters = new Field(3).enemyMonsters;
-    letsBattle(myMonsters, nextEnemyMonsters, false);
-  }
-
-  public static void firstAttack(Monster2 myMonster, Monster2 enemyMonster){
-	  // 味方・敵がそれぞれ特殊技を使うかどうか
-	  boolean useSpecial_my = false;
-	  boolean useSpecial_enemy = false;
-
-	  // コマンド入力で味方の攻撃の仕方を指定
-	  Scanner scanner = new Scanner(System.in);
-	    while(true) {
-	        System.out.println("どうやって攻撃する？ 通常攻撃：１ 特殊技：２");
-	        if(scanner.hasNextInt()){
-	          int selectCommand = scanner.nextInt();
-	          if(selectCommand < 1 || selectCommand > 2){
-	            System.out.println("数値は1,2のどれかを入力してください");
-	            continue;
-	          } else if(selectCommand == 2){
-	            useSpecial_my = true;
-	            break;
-	          }else {
-	        	  break;
-	          }
-	        }else {
-	          System.out.println("数値を入力してください");
-	          scanner.next();
-	        }
-	    }
-	    // 確率で敵も特殊技を使う
-	    double randSpecial = new Random().nextDouble();
-	    useSpecial_enemy = (randSpecial < 0.3);
-
-	    // attackとspecialAttackどちらを呼び出すか
-	    try{
-	        Method myAttackMethod;
-	        Method enemyAttackMethod;
-	    	myAttackMethod = useSpecial_my
-	    		? myMonster.getClass().getMethod("specialAttack", Monster2.class, Monster2.class)
-	    		: myMonster.getClass().getMethod("attack", Monster2.class, Monster2.class);
-	    	enemyAttackMethod = useSpecial_enemy
-		    		? enemyMonster.getClass().getMethod("specialAttack", Monster2.class, Monster2.class)
-		    		: enemyMonster.getClass().getMethod("attack", Monster2.class, Monster2.class);
-
-	        // 攻撃処理
-	        if(myMonster.agility > enemyMonster.agility && myMonster.getBattle() && enemyMonster.getBattle()){
-	          myAttackMethod.invoke(myMonster, enemyMonster, myMonster);
-				if (enemyMonster.getBattle()) {
-					enemyAttackMethod.invoke(enemyMonster, myMonster, enemyMonster);
-				}
-			} else if (myMonster.agility < enemyMonster.agility && enemyMonster.getBattle() && myMonster.getBattle()) {
-				enemyAttackMethod.invoke(enemyMonster, myMonster, enemyMonster);
-				if (myMonster.getBattle()) {
-					myAttackMethod.invoke(myMonster, enemyMonster, myMonster);
-				}
-			} else {
-				Random rand = new Random();
-				int num = rand.nextInt(2);
-				if (num == 0) {
-					if (myMonster.getBattle() && enemyMonster.getBattle()) {
-						myAttackMethod.invoke(myMonster, enemyMonster, myMonster);
-						if (enemyMonster.getBattle()) {
-							enemyAttackMethod.invoke(enemyMonster, myMonster, enemyMonster);
-						}
-					}
-				} else {
-					if (enemyMonster.getBattle() && myMonster.getBattle()) {
-						enemyAttackMethod.invoke(enemyMonster, myMonster, enemyMonster);
-						if (myMonster.getBattle()) {
-							myAttackMethod.invoke(myMonster, enemyMonster, myMonster);
-						}
-					}
-				}
-			}
-	    } catch(NoSuchMethodException e) {
-	    	e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
-
-
-
-
-  }
-
-  public static void changeMonster(ArrayList<Monster2> myMonsters, int currentNumber, int selectNumber){
-    Collections.swap(myMonsters, currentNumber, selectNumber -1);
-  }
-
-  public static void bossBattle(ArrayList<Monster2> bossMonsters, ArrayList<Monster2> myMonsters){
-    System.out.println("ボスモンスターが出現した");
-    letsBattle(myMonsters, bossMonsters, true);
+  public static void isContinue(){
+    field = new Field(4, false);
+    battle(false);
   }
 
   public static void clearBoss(){
