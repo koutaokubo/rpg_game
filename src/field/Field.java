@@ -51,7 +51,7 @@ public class Field {
       }else{
     	  Random random = new Random();
           for (int i =0; i < number; i++){
-              enemyMonsters.add(monsters.get(random.nextInt(number)).clone());
+              enemyMonsters.add(monsters.get(random.nextInt(monsters.size())).clone());
           }
       }
       return enemyMonsters;

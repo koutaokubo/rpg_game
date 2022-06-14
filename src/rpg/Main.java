@@ -64,6 +64,7 @@ public class Main {
           if(!isBoss) {
         	  enemyMonsters.clear();
         	  System.out.println("戦闘から逃げた！");
+        	  continueGame();
         	  return;
           }else {
         	  System.out.println("ボスの威圧感が強すぎて逃げられない！");
@@ -96,7 +97,15 @@ public class Main {
     if(isBoss){
       clearBoss();
     }else{
-      isWin();
+    	if(party.allKnockedOut()){
+    	    System.out.println("敗北してしまった・・・");
+    	}else if(field.allKnockedOut()){
+    		System.out.println("敵に勝利！");
+    		Party.money += 100;
+    		System.out.println("賞金 100円 を手に入れた！");
+
+    		continueGame();
+    	}
     }
   }
 
@@ -195,16 +204,8 @@ public class Main {
   }
 
 
-  public static void isWin(){
+  public static void continueGame(){
 
-    if(party.allKnockedOut()){
-      System.out.println("敗北してしまった・・・");
-    }
-
-    if(field.allKnockedOut()){
-      System.out.println("敵に勝利！");
-      Party.money += 100;
-      System.out.println("賞金 100円 を手に入れた！");
       int selectCommand = inputCommand();
       if(selectCommand == 0) { // 終了
     	  System.out.println("ゲームを終了します");
@@ -212,11 +213,11 @@ public class Main {
       }
       if(selectCommand == 1){ // 続ける
         battleCount++;
-        isContinue();
+        newBattle();
       }else if(selectCommand == 2){ // 回復して続ける
         battleCount++;
         party.heal();
-        isContinue();
+        newBattle();
       }else if(selectCommand == 3){ // アイテムを使う
         if(Party.itemBox.size() == 0){
           System.out.println("アイテムがありません");
@@ -226,20 +227,19 @@ public class Main {
         Party.itemBox.showList();
         int index = selectItemIndex(Party.itemBox);
         Party.itemBox.useItem(index);
-        isContinue();
+        newBattle();
       }else if(selectCommand == 4) { // ショップで購入
         System.out.println("購入するアイテムを選択してください");
         Party.shopList.showList();
         int index = buyItemIndex(Party.shopList);
         Party.shopList.buyItems(index);
-        isContinue();
+        newBattle();
       }else if(selectCommand == 5){ // ボス戦
         party.heal();
     	System.out.println("ボスモンスターが出現した！");
         field = new Field(1, true);
         battle(true);
       }
-    }
   }
 
   public static int selectItemIndex(ItemBox itemBox){
@@ -280,7 +280,7 @@ public class Main {
     Scanner scan = new Scanner(System.in);
     while(true) {
       if(battleCount >= 3){
-        System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３  買い物：4　ボスと戦う：5");
+        System.out.println("つづけて冒険に出ますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３  買い物：4　ボスと戦う：5");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt();
           if(selectCommand < 0 || selectCommand > 5){
@@ -294,7 +294,7 @@ public class Main {
           scan.next();
         }
       }
-        System.out.println("戦闘を続けますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３ 買い物：４");
+        System.out.println("つづけて冒険に出ますか？　終了する：０　続ける：１　回復して続ける：２　アイテム使用：３ 買い物：４");
         if(scan.hasNextInt()){
           int selectCommand = scan.nextInt();
           if(selectCommand < 0 || selectCommand > 5){
@@ -353,7 +353,7 @@ public class Main {
     }
   }
 
-  public static void isContinue(){
+  public static void newBattle(){
     field = new Field(4, false);
     battle(false);
   }
